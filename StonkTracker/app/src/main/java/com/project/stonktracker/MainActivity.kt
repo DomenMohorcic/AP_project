@@ -2,6 +2,7 @@ package com.project.stonktracker
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 
@@ -20,15 +21,21 @@ class MainActivity : AppCompatActivity() {
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
 
         nav = binding.bottomNavigationView
-        nav.setOnNavigationItemReselectedListener {
-            if (it.itemId == R.id.nav_home) {
-                selectedFragment = MainFragment()
+        nav.setOnNavigationItemSelectedListener {
+            when (it.itemId) {
+                R.id.nav_home -> selectedFragment = MainFragment()
+                R.id.nav_histroy -> selectedFragment = HistoryFragment()
+                R.id.nav_search -> selectedFragment = MainFragment() //TODO make it proper
             }
+
+            Log.i("fragment_log", "$selectedFragment")
 
             val fragmentTransaction = supportFragmentManager.beginTransaction()
             fragmentTransaction.replace(R.id.fragment, selectedFragment)
             fragmentTransaction.addToBackStack(null)
             fragmentTransaction.commit()
+
+            return@setOnNavigationItemSelectedListener true
         }
     }
 
