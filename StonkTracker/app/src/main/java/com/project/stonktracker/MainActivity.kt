@@ -1,11 +1,12 @@
 package com.project.stonktracker
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.os.Handler
 import android.util.Log
+import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
-
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.project.stonktracker.databinding.ActivityMainBinding
 
@@ -32,11 +33,22 @@ class MainActivity : AppCompatActivity() {
 
             val fragmentTransaction = supportFragmentManager.beginTransaction()
             fragmentTransaction.replace(R.id.fragment, selectedFragment)
-            fragmentTransaction.addToBackStack(null)
+            // don't put fragments on stack
+            // fragmentTransaction.addToBackStack(null)
             fragmentTransaction.commit()
 
             return@setOnNavigationItemSelectedListener true
         }
     }
 
+    /* Double back press for exit */
+    private var doublePressed: Boolean = false
+    override fun onBackPressed() {
+        if(doublePressed) { super.onBackPressed() }
+        else {
+            doublePressed = true;
+            Toast.makeText(this, "Click BACK again to exit", Toast.LENGTH_SHORT).show();
+            Handler().postDelayed(Runnable {doublePressed = false}, 2000)
+        }
+    }
 }
