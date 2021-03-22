@@ -1,3 +1,8 @@
 <resources>
     <string name="app_name">Stonk Tracker</string>
+    <string name="nav_home_name">Home</string>
+    <string name="nav_search_name">Search</string>
+    <string name="nav_history_name">History</string>
+    <string name="portfolio_pl">P/L ----€ --.--%</string>
+    <string name="portfolio_worth">----€</string>
 </resources>
