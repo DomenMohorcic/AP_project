@@ -5,7 +5,7 @@ import androidx.room.*
 
 @Database(entities = [PurchaseHistory::class, StockInfo::class], version = 1, exportSchema = false)
 abstract class StonkDatabase: RoomDatabase() {
-    abstract fun phDao(): StonkDao
+    abstract fun stonkDao(): StonkDao
 
     companion object {
         private var INSTANCE: StonkDatabase? = null
@@ -35,7 +35,8 @@ data class StockInfo (
     @PrimaryKey val ticker: String = "",
     @ColumnInfo var full_name: String = "",
     @ColumnInfo var webURL: String = "",
-    @ColumnInfo var imgURL: String = ""
+    @ColumnInfo var imgURL: String = "",
+    @ColumnInfo var shares: Int = 0
 )
 
 @Dao
@@ -44,35 +45,41 @@ interface StonkDao {
     // PURCHASE HISTORY DATABASE
 
     @Query("SELECT DISTINCT ticker FROM purchaseHistory")
-    fun getAllTickers(): List<String>
+    fun phGetAllTickers(): List<String>
 
     @Query("SELECT * FROM purchaseHistory WHERE ticker LIKE :ticker")
-    fun getTicker(ticker: String): List<PurchaseHistory>
+    fun phGetTicker(ticker: String): List<PurchaseHistory>
 
-    @Query("SELECT *")
-    fun getAllInstances(): List<PurchaseHistory>
+    @Query("SELECT * FROM purchaseHistory")
+    fun phGetAllInstances(): List<PurchaseHistory>
 
-    @Query("SELECT COUNT(*)")
-    fun countInstances(): Int
+    @Query("SELECT COUNT(*) FROM purchaseHistory")
+    fun phCountInstances(): Int
 
     @Query("SELECT SUM(quantity) FROM purchaseHistory WHERE ticker LIKE :ticker")
-    fun getSharesTicker(ticker: String): Double
+    fun phGetSharesTicker(ticker: String): Double
 
     @Query("SELECT SUM(price) FROM purchaseHistory WHERE ticker LIKE :ticker AND buy")
-    fun getPaidTicker(ticker: String): Double
+    fun phGetBoughtTicker(ticker: String): Double
 
     @Query("SELECT SUM(price) FROM purchaseHistory WHERE ticker LIKE :ticker AND NOT buy")
-    fun getSoldTicker(ticker: String): Double
+    fun phGetSoldTicker(ticker: String): Double
 
     @Insert(entity = PurchaseHistory::class)
-    fun insert(ph: PurchaseHistory?)
+    fun phInsert(ph: PurchaseHistory?)
+
+    @Delete(entity = PurchaseHistory::class)
+    fun phDelete(ph: PurchaseHistory?)
 
 
     // STOCK INFO DATABASE
 
     @Query("SELECT * FROM stockInfo WHERE ticker LIKE :ticker")
-    fun getTicker(ticker: String?): StockInfo?
+    fun siGetTicker(ticker: String?): StockInfo?
+
+    @Query("SELECT * FROM stockInfo WHERE shares > 0")
+    fun siGetStocksWithShares(): List<StockInfo>
 
     @Insert(entity = StockInfo::class)
-    fun insert(si: StockInfo?)
+    fun siInsert(si: StockInfo?)
 }
