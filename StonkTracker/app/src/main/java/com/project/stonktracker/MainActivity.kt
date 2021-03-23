@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.os.Handler
 import android.util.Log
 import android.widget.Toast
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
@@ -15,6 +16,9 @@ class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
     private lateinit var nav: BottomNavigationView
     private lateinit var selectedFragment: Fragment
+
+    private val historyModel: HistoryViewModel by viewModels()
+    // private val mainModel: MainViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -33,7 +37,7 @@ class MainActivity : AppCompatActivity() {
 
             val fragmentTransaction = supportFragmentManager.beginTransaction()
             fragmentTransaction.replace(R.id.fragment, selectedFragment)
-            // don't put fragments on stack
+            // don't put fragments on stack -- Coolio
             // fragmentTransaction.addToBackStack(null)
             fragmentTransaction.commit()
 
