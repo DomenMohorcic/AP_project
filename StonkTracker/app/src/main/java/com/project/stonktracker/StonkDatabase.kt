@@ -66,20 +66,26 @@ interface StonkDao {
     fun phGetSoldTicker(ticker: String): Double
 
     @Insert(entity = PurchaseHistory::class)
-    fun phInsert(ph: PurchaseHistory?)
+    fun phInsert(ph: PurchaseHistory)
 
     @Delete(entity = PurchaseHistory::class)
-    fun phDelete(ph: PurchaseHistory?)
+    fun phDelete(ph: PurchaseHistory)
 
 
     // STOCK INFO DATABASE
 
     @Query("SELECT * FROM stockInfo WHERE ticker LIKE :ticker")
-    fun siGetTicker(ticker: String?): StockInfo?
+    fun siGetTicker(ticker: String): StockInfo
 
     @Query("SELECT * FROM stockInfo WHERE shares > 0")
     fun siGetStocksWithShares(): List<StockInfo>
 
+    @Query("SELECT * FROM stockInfo")
+    fun siGetAllInstances(): List<StockInfo>
+
+    @Query("SELECT COUNT(*) FROM stockInfo")
+    fun siCountInstances(): Int
+
     @Insert(entity = StockInfo::class)
-    fun siInsert(si: StockInfo?)
+    fun siInsert(si: StockInfo)
 }
