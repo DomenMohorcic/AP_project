@@ -17,7 +17,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var nav: BottomNavigationView
     private lateinit var selectedFragment: Fragment
 
-    private val historyModel: HistoryViewModel by viewModels()
+    // private val historyModel: HistoryViewModel by viewModels()
     // private val mainModel: MainViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {

@@ -21,7 +21,7 @@ abstract class StonkDatabase: RoomDatabase() {
 
 @Entity(tableName = "purchaseHistory")
 data class PurchaseHistory (
-    @PrimaryKey(autoGenerate = true)
+    @PrimaryKey(autoGenerate = true) var pID: Int = 0,
     @ColumnInfo var ticker: String = "null",
     @ColumnInfo var date: String = "",
     @ColumnInfo var quantity: Double = 0.0,
@@ -35,7 +35,6 @@ data class StockInfo (
     @PrimaryKey val ticker: String = "",
     @ColumnInfo var full_name: String = "",
     @ColumnInfo var webURL: String = "",
-    @ColumnInfo var imgURL: String = "",
     @ColumnInfo var shares: Int = 0
 )
 

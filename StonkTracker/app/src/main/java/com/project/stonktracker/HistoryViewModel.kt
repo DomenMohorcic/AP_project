@@ -13,12 +13,12 @@ class HistoryViewModel : ViewModel() {
     val history: MutableLiveData<List<PurchaseHistory>> = MutableLiveData<List<PurchaseHistory>>()
 
     fun getHistory() {
-        history.value = historyRepo.getHistory()!!
+        //history.value = historyRepo.getHistory()!!
     }
 }
 
 class HistoryRepository : Application() {
-    private var db: StonkDatabase? = null
+    /*private var db: StonkDatabase? = null
     private var stonkDao: StonkDao? = null
 
     init {
@@ -28,7 +28,7 @@ class HistoryRepository : Application() {
 
     fun getHistory(): List<PurchaseHistory>? {
         return stonkDao?.phGetAllInstances()
-    }
+    }*/
 
     // tle je koda za background klice na apije...
 }
