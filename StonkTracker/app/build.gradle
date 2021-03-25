@@ -41,6 +41,9 @@ android {
 
 dependencies {
 
+    // Volley for http api calls
+    implementation 'com.android.volley:volley:1.2.0'
+
     def room_version = "2.2.6"
     implementation "androidx.room:room-runtime:$room_version"
     kapt "androidx.room:room-compiler:$room_version"

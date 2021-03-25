@@ -11,7 +11,6 @@ import androidx.recyclerview.widget.RecyclerView
 import com.project.stonktracker.databinding.PortfolioFragmentBinding
 
 class PortfolioFragment : Fragment() {
-
     companion object {
         fun newInstance() = PortfolioFragment()
     }
@@ -19,6 +18,7 @@ class PortfolioFragment : Fragment() {
     private lateinit var viewModel: MainViewModel
     private lateinit var recyclerView: RecyclerView
 
+    // binding
     private var _binding: PortfolioFragmentBinding? = null
     // This property is only valid between onCreateView and onDestroyView.
     private val binding get() = _binding!!
@@ -27,8 +27,7 @@ class PortfolioFragment : Fragment() {
         container?.removeAllViews() // else previous fragment is visible in background
         _binding = PortfolioFragmentBinding.inflate(inflater, container, false)
 
-        // val view: View = inflater.inflate(R.layout.main_fragment, container, false)
-
+        // RecyclerView for showing portfolio data
         recyclerView = binding.recyclerViewMain
         recyclerView.setHasFixedSize(true)
         recyclerView.layoutManager = GridLayoutManager(view?.context, 1)
