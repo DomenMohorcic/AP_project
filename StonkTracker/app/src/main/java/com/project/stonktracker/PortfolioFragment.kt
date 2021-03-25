@@ -34,6 +34,15 @@ class PortfolioFragment : Fragment() {
         recyclerView.adapter = PortfolioFragmentAdapter(arrayListOf(
             StockInfo("T", "AT&T", "att.com", 20),
             StockInfo("AAPL", "Apple Inc.", "apple.com", 50),
+            StockInfo("STB", "Starbucks", "starbucks.com", 45),
+            StockInfo("T", "AT&T", "att.com", 20),
+            StockInfo("AAPL", "Apple Inc.", "apple.com", 50),
+            StockInfo("STB", "Starbucks", "starbucks.com", 45),
+            StockInfo("T", "AT&T", "att.com", 20),
+            StockInfo("AAPL", "Apple Inc.", "apple.com", 50),
+            StockInfo("STB", "Starbucks", "starbucks.com", 45),
+            StockInfo("T", "AT&T", "att.com", 20),
+            StockInfo("AAPL", "Apple Inc.", "apple.com", 50),
             StockInfo("STB", "Starbucks", "starbucks.com", 45)
         ))
 

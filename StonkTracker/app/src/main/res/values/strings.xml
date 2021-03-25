@@ -3,8 +3,8 @@
     <string name="nav_home_name">Home</string>
     <string name="nav_search_name">Search</string>
     <string name="nav_history_name">History</string>
-    <string name="portfolio_pl">P/L ----€ --.--%</string>
-    <string name="portfolio_worth">----€</string>
+    <string name="portfolio_pl">+250.65€ (+21.14%)</string>
+    <string name="portfolio_worth">1,895.65€</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>
