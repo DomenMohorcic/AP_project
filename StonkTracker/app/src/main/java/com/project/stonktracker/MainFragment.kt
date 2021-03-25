@@ -32,11 +32,11 @@ class MainFragment : Fragment() {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         _binding = MainFragmentBinding.inflate(inflater, container, false)
 
-        val view: View = inflater.inflate(R.layout.main_fragment, container, false)
+        // val view: View = inflater.inflate(R.layout.main_fragment, container, false)
 
         recyclerView = binding.recyclerViewMain
         recyclerView.setHasFixedSize(true)
-        recyclerView.layoutManager = GridLayoutManager(view.context, 1)
+        recyclerView.layoutManager = GridLayoutManager(view?.context, 1)
         recyclerView.adapter = MainFragmentAdapter(arrayListOf(
             StockInfo("T", "AT&T", "att.com", 20),
             StockInfo("AAPL", "Apple Inc.", "apple.com", 50),
