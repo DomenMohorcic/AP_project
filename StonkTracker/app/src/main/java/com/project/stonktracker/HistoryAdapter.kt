@@ -11,7 +11,7 @@ import com.google.android.material.snackbar.Snackbar
 class HistoryAdapter(private val dataSet: ArrayList<PurchaseHistory>) :
     RecyclerView.Adapter<HistoryAdapter.ViewHolder>() {
 
-    class ViewHolder(view : View) : RecyclerView.ViewHolder(view) {
+    class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         val viewTicker: TextView
         val viewShares: TextView
         val viewDate: TextView

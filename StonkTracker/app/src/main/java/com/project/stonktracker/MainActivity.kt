@@ -4,7 +4,6 @@ import android.os.Bundle
 import android.os.Handler
 import android.util.Log
 import android.widget.Toast
-import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
@@ -27,10 +26,10 @@ class MainActivity : AppCompatActivity() {
 
         nav = binding.bottomNavigationView
         nav.setOnNavigationItemSelectedListener {
-            when (it.itemId) {
-                R.id.nav_home -> selectedFragment = MainFragment()
+            when(it.itemId) {
+                R.id.nav_home -> selectedFragment = PortfolioFragment()
                 R.id.nav_histroy -> selectedFragment = HistoryFragment()
-                R.id.nav_search -> selectedFragment = MainFragment() //TODO make it proper
+                R.id.nav_search -> selectedFragment = SearchFragment()
             }
 
             Log.i("fragment_log", "$selectedFragment")

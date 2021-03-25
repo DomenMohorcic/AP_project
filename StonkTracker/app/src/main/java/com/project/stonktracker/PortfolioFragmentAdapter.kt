@@ -9,7 +9,7 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 
-class MainFragmentAdapter(private val stockData: ArrayList<StockInfo>) : RecyclerView.Adapter<MainFragmentAdapter.ViewHolder>() {
+class PortfolioFragmentAdapter(private val stockData: ArrayList<StockInfo>) : RecyclerView.Adapter<PortfolioFragmentAdapter.ViewHolder>() {
 
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         val logoImage: ImageView = view.findViewById(R.id.imageViewLogo)

@@ -34,7 +34,7 @@
             app:layout_constraintHorizontal_bias="1.0"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            android:name="com.project.stonktracker.MainFragment" />
+            android:name="com.project.stonktracker.PortfolioFragment" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

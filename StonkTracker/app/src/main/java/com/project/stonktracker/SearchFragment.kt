@@ -1,34 +1,35 @@
 package com.project.stonktracker
 
-import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import com.project.stonktracker.databinding.HistoryFragmentBinding
+import androidx.core.widget.addTextChangedListener
+import androidx.core.widget.doOnTextChanged
+import com.project.stonktracker.databinding.SearchFragmentBinding
 
-class HistoryFragment : Fragment() {
-
+class SearchFragment : Fragment() {
     companion object {
-        fun newInstance() = HistoryFragment()
+        fun newInstance() = SearchFragment()
     }
 
-    private lateinit var viewModel: HistoryViewModel
-
-    private var _binding: HistoryFragmentBinding? = null
-    // This property is only valid between onCreateView and onDestroyView.
+    private var _binding: SearchFragmentBinding? = null
     private val binding get() = _binding!!
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         container?.removeAllViews() // else previous fragment is visible in background
-        _binding = HistoryFragmentBinding.inflate(inflater, container, false)
+        _binding = SearchFragmentBinding.inflate(inflater, container, false)
+
+        binding.searchBox.addTextChangedListener {
+            binding.textView.text = binding.searchBox.text
+        }
+
         return binding.root
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        viewModel = ViewModelProvider(this).get(HistoryViewModel::class.java)
         // TODO: Use the ViewModel
     }
 }
