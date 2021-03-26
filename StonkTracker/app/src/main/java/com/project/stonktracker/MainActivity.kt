@@ -28,8 +28,9 @@ class MainActivity : AppCompatActivity() {
         nav.setOnNavigationItemSelectedListener {
             when(it.itemId) {
                 R.id.nav_home -> selectedFragment = PortfolioFragment()
-                R.id.nav_histroy -> selectedFragment = HistoryFragment()
+                R.id.nav_history -> selectedFragment = HistoryFragment()
                 R.id.nav_search -> selectedFragment = SearchFragment()
+                R.id.nav_stats -> selectedFragment = SearchFragment()
             }
 
             Log.i("fragment_log", "$selectedFragment")

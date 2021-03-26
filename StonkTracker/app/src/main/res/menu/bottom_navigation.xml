@@ -7,12 +7,17 @@
         android:title="@string/nav_home_name" />
 
     <item
+        android:id="@+id/nav_stats"
+        android:icon="@drawable/ic_baseline_pie_chart_24"
+        android:title="@string/nav_stats_name" />
+
+    <item
         android:id="@+id/nav_search"
         android:icon="@drawable/ic_baseline_search_24"
         android:title="@string/nav_search_name" />
 
     <item
-        android:id="@+id/nav_histroy"
+        android:id="@+id/nav_history"
         android:icon="@drawable/ic_baseline_history_24"
         android:title="@string/nav_history_name" />
 

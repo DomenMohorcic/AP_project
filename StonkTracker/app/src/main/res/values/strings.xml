@@ -1,6 +1,7 @@
 <resources>
     <string name="app_name">Stonk Tracker</string>
     <string name="nav_home_name">Home</string>
+    <string name="nav_stats_name">Stats</string>
     <string name="nav_search_name">Search</string>
     <string name="nav_history_name">History</string>
     <string name="portfolio_pl">+250.65€ (+21.14%)</string>
