@@ -1,0 +1,188 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+        <variable
+            name="stockName"
+            type="String" />
+    </data>
+
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="?attr/colorOnBackground"
+        tools:context=".PortfolioFragment">
+
+        <EditText
+            android:id="@+id/editPrice"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="16dp"
+            android:ems="7"
+            android:textAlignment="viewEnd"
+            android:autofillHints="@string/hint_price_in"
+            android:hint="@string/hint_price_in"
+            android:inputType="numberDecimal"
+            app:layout_constraintBottom_toTopOf="@+id/editFees"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/editDate" />
+
+        <EditText
+            android:id="@+id/editFees"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="16dp"
+            android:layout_marginBottom="100dp"
+            android:ems="7"
+            android:textAlignment="viewEnd"
+            android:autofillHints="@string/hint_fees_in"
+            android:hint="@string/hint_fees_in"
+            android:inputType="numberDecimal"
+            app:layout_constraintBottom_toTopOf="@+id/button4"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/editPrice" />
+
+        <Button
+            android:id="@+id/buttonBuy"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="32dp"
+            android:layout_marginEnd="8dp"
+            android:background="@drawable/smooth_background"
+            android:text="@string/button_buy"
+            app:layout_constraintEnd_toStartOf="@+id/buttonSell"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tickerName" />
+
+        <Button
+            android:id="@+id/buttonSell"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="32dp"
+            android:layout_marginEnd="16dp"
+            android:background="@drawable/smooth_background"
+            android:text="@string/button_sell"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toEndOf="@+id/buttonBuy"
+            app:layout_constraintTop_toBottomOf="@+id/tickerName" />
+
+        <Button
+            android:id="@+id/button4"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="32dp"
+            android:layout_marginEnd="32dp"
+            android:layout_marginBottom="16dp"
+            android:background="@drawable/smooth_background"
+            android:text="@string/button_save"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <EditText
+            android:id="@+id/editShares"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="100dp"
+            android:layout_marginEnd="16dp"
+            android:ems="7"
+            android:textAlignment="viewEnd"
+            android:autofillHints="@string/hint_shares"
+            android:hint="@string/hint_shares"
+            android:inputType="numberDecimal"
+            app:layout_constraintBottom_toTopOf="@+id/editDate"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/buttonBuy" />
+
+        <TextView
+            android:id="@+id/editDate"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="16dp"
+            android:text="Oct 20, 2020"
+            android:textColor="@color/neutral_000"
+            android:textAlignment="textEnd"
+            android:textSize="16sp"
+            app:layout_constraintBottom_toTopOf="@+id/editPrice"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toEndOf="@+id/textDate"
+            app:layout_constraintTop_toBottomOf="@+id/editShares" />
+
+        <TextView
+            android:id="@+id/textShares"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="32dp"
+            android:text="@string/text_shares"
+            android:textSize="14sp"
+            app:layout_constraintBottom_toBottomOf="@+id/editShares"
+            app:layout_constraintEnd_toStartOf="@+id/editShares"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/editShares" />
+
+        <TextView
+            android:id="@+id/textDate"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="32dp"
+            android:text="@string/text_date"
+            android:textSize="14sp"
+            app:layout_constraintBottom_toBottomOf="@+id/editDate"
+            app:layout_constraintEnd_toStartOf="@+id/editDate"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/editDate" />
+
+        <TextView
+            android:id="@+id/textView6"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="32dp"
+            android:text="@string/text_price_in"
+            android:textSize="14sp"
+            app:layout_constraintBottom_toBottomOf="@+id/editPrice"
+            app:layout_constraintEnd_toStartOf="@+id/editPrice"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/editPrice" />
+
+        <TextView
+            android:id="@+id/textFees"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="32dp"
+            android:text="@string/text_fees_in"
+            android:textSize="14sp"
+            app:layout_constraintBottom_toBottomOf="@+id/editFees"
+            app:layout_constraintEnd_toStartOf="@+id/editFees"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/editFees" />
+
+        <TextView
+            android:id="@+id/tickerName"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:text="AAPL"
+            android:textAlignment="center"
+            android:textSize="24sp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toTopOf="@+id/buttonBuy"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

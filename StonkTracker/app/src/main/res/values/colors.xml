@@ -12,4 +12,9 @@
 
     <color name="blue_000">#C8F3F6</color>
     <color name="blue_100">#8FDBE1</color>
+
+
+    <color name="buy_000">#299F6C</color>
+    <color name="sell_000">#EC4C30</color>
+    <color name="neutral_000">#9F9E9E9E</color>
 </resources>

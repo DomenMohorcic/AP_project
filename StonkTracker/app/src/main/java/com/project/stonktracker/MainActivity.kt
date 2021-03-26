@@ -22,6 +22,9 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+        // hide text from tool bar
+        // supportActionBar?.setDisplayShowTitleEnabled(false);
+
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
 
         nav = binding.bottomNavigationView
@@ -30,7 +33,7 @@ class MainActivity : AppCompatActivity() {
                 R.id.nav_home -> selectedFragment = PortfolioFragment()
                 R.id.nav_history -> selectedFragment = HistoryFragment()
                 R.id.nav_search -> selectedFragment = SearchFragment()
-                R.id.nav_stats -> selectedFragment = SearchFragment()
+                R.id.nav_stats -> selectedFragment = TransactionFragment()
             }
 
             Log.i("fragment_log", "$selectedFragment")

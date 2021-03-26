@@ -6,6 +6,21 @@
     <string name="nav_history_name">History</string>
     <string name="portfolio_pl">+250.65€ (+21.14%)</string>
     <string name="portfolio_worth">1,895.65€</string>
+    <string name="button_buy">Buy</string>
+    <string name="button_sell">Sell</string>
+    <string name="button_save">Save</string>
+
+    <string name="text_shares">Shares</string>
+    <string name="text_date">Date</string>
+    <string name="text_price_in">Price in €</string>
+    <string name="text_fees_in">Fees in €</string>
+
+    <string name="hint_shares">0.0</string>
+    <!-- <string name="hint_date">Date</string> -->
+    <string name="hint_price_in">0.0</string>
+    <string name="hint_fees_in">0.0</string>
+
+
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>
