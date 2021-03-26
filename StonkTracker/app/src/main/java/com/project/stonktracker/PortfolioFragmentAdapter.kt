@@ -14,8 +14,7 @@ class PortfolioFragmentAdapter(private val stockData: ArrayList<StockInfo>) : Re
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         val logoImage: ImageView = view.findViewById(R.id.imageViewLogo)
         val nameText: TextView = view.findViewById(R.id.nameText)
-        val sharesText: TextView = view.findViewById(R.id.totalSharesCurrentPrice)
-        // val priceText: TextView = view.findViewById(R.id.totalSharesCurrentPrice)
+        val sharesPriceText: TextView = view.findViewById(R.id.totalSharesCurrentPrice)
         val valueText: TextView = view.findViewById(R.id.totalValue)
         val changeText: TextView = view.findViewById(R.id.sharesPL)
     }
@@ -34,10 +33,9 @@ class PortfolioFragmentAdapter(private val stockData: ArrayList<StockInfo>) : Re
             .load("https://logo.clearbit.com/${si.webURL}")
             .into(holder.logoImage)
         holder.nameText.text = si.full_name
-        holder.sharesText.text = si.shares.toString()
-        // holder.priceText.text = price.toString()
-        holder.valueText.text = (price * si.shares).toString()
-        holder.changeText.text = (price * si.shares - si.shares).toString() // * price bought
+        holder.sharesPriceText.text = "${si.shares} shares @ ${price}€"
+        holder.valueText.text = "${price * si.shares}€"
+        holder.changeText.text = "${price * si.shares - si.shares*10}"
     }
 
     override fun getItemCount(): Int {
