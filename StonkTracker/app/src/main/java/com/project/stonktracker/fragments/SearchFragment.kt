@@ -42,23 +42,25 @@ class SearchFragment : Fragment() {
             val url = "https://www.alphavantage.co/query?function=SYMBOL_SEARCH&keywords=${q}&apikey=RTUYSN1G309FMPH2"
             queue.add(JsonObjectRequest(Request.Method.GET, url, null,
                 { response ->
-                    val arr = response.getJSONArray("bestMatches")
-                    var str = ""
-                    for(i in 0 until arr.length()) {
-                        var obj = arr.getJSONObject(i)
-                        var textToAdd = "${i}: ${obj.getString("1. symbol")} - ${obj.getString("2. name")} (${obj.getString("4. region")})\n"
-                        str += textToAdd
+                    if(response.has("bestMatches")) {
+                        val arr = response.getJSONArray("bestMatches")
+                        var str = ""
+                        for(i in 0 until arr.length()) {
+                            var obj = arr.getJSONObject(i)
+                            var textToAdd = "${i}: ${obj.getString("1. symbol")} - ${obj.getString("2. name")} (${obj.getString("4. region")})\n"
+                            str += textToAdd
 
-                        searchResults.add("${obj.getString("1. symbol")} - ${obj.getString("2. name")}")
+                            searchResults.add("${obj.getString("1. symbol")} - ${obj.getString("2. name")}")
+                        }
+                        // binding.textView.text = str
+                        // RecyclerView for showing portfolio data
+                        recyclerView = binding.recyclerViewSearch
+                        recyclerView.setHasFixedSize(true)
+                        recyclerView.layoutManager = GridLayoutManager(view?.context, 1)
+                        recyclerView.adapter = SearchFragmentAdapter(searchResults)
+
+                        searchResults = ArrayList()
                     }
-                    // binding.textView.text = str
-                    // RecyclerView for showing portfolio data
-                    recyclerView = binding.recyclerViewSearch
-                    recyclerView.setHasFixedSize(true)
-                    recyclerView.layoutManager = GridLayoutManager(view?.context, 1)
-                    recyclerView.adapter = SearchFragmentAdapter(searchResults)
-
-                    searchResults = ArrayList()
                 },
                 { error -> Log.e("request_error", "this b*tch empty") }))
         }
@@ -69,5 +71,10 @@ class SearchFragment : Fragment() {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         // TODO: Use the ViewModel
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 }
