@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.widget.addTextChangedListener
+import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.android.volley.Request
@@ -14,6 +15,8 @@ import com.android.volley.RequestQueue
 import com.android.volley.Response
 import com.android.volley.toolbox.*
 import com.project.stonktracker.databinding.SearchFragmentBinding
+import com.project.stonktracker.viewmodels.Company
+import com.project.stonktracker.viewmodels.FragmentVM
 import org.json.JSONArray
 
 class SearchFragment : Fragment() {
@@ -27,8 +30,9 @@ class SearchFragment : Fragment() {
 
     // for Volley requests
     private lateinit var queue: RequestQueue
-    private var searchResults: ArrayList<String> = ArrayList()
+    private var searchResults: ArrayList<Company> = ArrayList()
     private lateinit var recyclerView: RecyclerView
+    private val fragmentVM: FragmentVM by activityViewModels()
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         container?.removeAllViews() // else previous fragment is visible in background
@@ -50,14 +54,14 @@ class SearchFragment : Fragment() {
                             var textToAdd = "${i}: ${obj.getString("1. symbol")} - ${obj.getString("2. name")} (${obj.getString("4. region")})\n"
                             str += textToAdd
 
-                            searchResults.add("${obj.getString("1. symbol")} - ${obj.getString("2. name")}")
+                            searchResults.add(Company(obj.getString("1. symbol"), obj.getString("2. name")))
                         }
                         // binding.textView.text = str
                         // RecyclerView for showing portfolio data
                         recyclerView = binding.recyclerViewSearch
                         recyclerView.setHasFixedSize(true)
                         recyclerView.layoutManager = GridLayoutManager(view?.context, 1)
-                        recyclerView.adapter = SearchFragmentAdapter(searchResults)
+                        recyclerView.adapter = SearchFragmentAdapter(searchResults, fragmentVM)
 
                         searchResults = ArrayList()
                     }

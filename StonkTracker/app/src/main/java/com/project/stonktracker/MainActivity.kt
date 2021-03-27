@@ -10,6 +10,7 @@ import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.project.stonktracker.databinding.ActivityMainBinding
+import com.project.stonktracker.viewmodels.FragmentVM
 
 class MainActivity : AppCompatActivity() {
 
@@ -20,6 +21,7 @@ class MainActivity : AppCompatActivity() {
     // private val historyModel: HistoryViewModel by viewModels()
     private val portfolioVM: PortfolioVM by viewModels()
     private val historyVM: HistoryVM by viewModels()
+    private val fragmentVM: FragmentVM by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

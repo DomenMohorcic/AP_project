@@ -11,9 +11,11 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.google.android.material.internal.ContextUtils.getActivity
+import com.project.stonktracker.viewmodels.Company
+import com.project.stonktracker.viewmodels.FragmentVM
 import org.w3c.dom.Text
 
-class SearchFragmentAdapter(private val searchResults: ArrayList<String>) : RecyclerView.Adapter<SearchFragmentAdapter.ViewHolder>() {
+class SearchFragmentAdapter(private val searchResults: ArrayList<Company>, private val fragmentVM: FragmentVM) : RecyclerView.Adapter<SearchFragmentAdapter.ViewHolder>() {
 
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         val name: TextView = view.findViewById(R.id.textName)
@@ -27,10 +29,13 @@ class SearchFragmentAdapter(private val searchResults: ArrayList<String>) : Recy
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val result = searchResults[position]
-        holder.name.text = result
+        holder.name.text = "${result.ticker} - ${result.name}"
 
         holder.addButton.setOnClickListener {
             var activity: AppCompatActivity = it.context as AppCompatActivity
+
+            // save choice to FragmentVM
+            fragmentVM.setCompany(result)
 
             val fragmentTransaction = activity.supportFragmentManager.beginTransaction()
             fragmentTransaction.replace(R.id.fragment, TransactionFragment())
