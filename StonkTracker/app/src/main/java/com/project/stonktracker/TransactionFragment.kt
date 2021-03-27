@@ -17,6 +17,9 @@ class TransactionFragment : Fragment() {
         fun newInstance() = TransactionFragment()
     }
 
+    private lateinit var viewModel: PortfolioVM
+    private lateinit var recyclerView: RecyclerView
+
     // binding
     private var _binding: TransactionFragmentBinding? = null
     // This property is only valid between onCreateView and onDestroyView.

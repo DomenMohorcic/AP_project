@@ -19,10 +19,12 @@ class MainActivity : AppCompatActivity() {
 
     // private val historyModel: HistoryViewModel by viewModels()
     private val portfolioVM: PortfolioVM by viewModels()
+    private val historyVM: HistoryVM by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         portfolioVM.repository = PortfolioRepository(StonkDatabase.getStonkDatabase(this)!!.stonkDao())
+        historyVM.repository = HistoryRepository(StonkDatabase.getStonkDatabase(this)!!.stonkDao())
 
         // hide text from tool bar
         // supportActionBar?.setDisplayShowTitleEnabled(false);

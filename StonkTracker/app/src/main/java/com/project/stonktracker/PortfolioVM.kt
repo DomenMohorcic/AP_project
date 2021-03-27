@@ -13,29 +13,15 @@ class PortfolioVM : ViewModel() {
 
     private var stocks = MutableLiveData<List<StockInfo>>()
 
-    var count: Int = 0
-
-    // tole je shit....
     fun init() {
-        var is_init = true
-        viewModelScope.launch(Dispatchers.IO) {
-            count = repository.getCount()
-        }
-        if(count == 0) {
-            // is_init = false
-            /*viewModelScope.launch(Dispatchers.IO) {
-                repository.insert(StockInfo("T", "AT&T", "att.com", 50))
-                repository.insert(StockInfo("AAPL", "Apple Inc.", "apple.com", 25))
-                repository.insert(StockInfo("STB", "Starbucks", "starbucks.com", 45))
-                repository.insert(StockInfo("CSCO", "Cisco", "cisco.com", 42))
-                repository.insert(StockInfo("KO", "Coca-Cola", "coca-colacompany.com", 50))
-                repository.insert(StockInfo("VICI", "VICI Properties", "viciproperties.com", 69))
-                repository.insert(StockInfo("TSLA", "Tesla", "tesla.com", 42069))
-                repository.insert(StockInfo("MCD", "McDonald's Corp", "mcdonalds.com", 1))
-                is_init = true
-            }*/
-        }
-        while(!is_init) {}
+        /*insert(StockInfo("T", "AT&T", "att.com", 50))
+        insert(StockInfo("AAPL", "Apple Inc.", "apple.com", 25))
+        insert(StockInfo("STB", "Starbucks", "starbucks.com", 45))
+        insert(StockInfo("CSCO", "Cisco", "cisco.com", 42))
+        insert(StockInfo("KO", "Coca-Cola", "coca-colacompany.com", 50))
+        insert(StockInfo("VICI", "VICI Properties", "viciproperties.com", 69))
+        insert(StockInfo("TSLA", "Tesla", "tesla.com", 42069))
+        insert(StockInfo("MCD", "McDonald's Corp", "mcdonalds.com", 1))*/
         viewModelScope.launch(Dispatchers.IO) {
             stocks.postValue(repository.getPortfolio())
         }
