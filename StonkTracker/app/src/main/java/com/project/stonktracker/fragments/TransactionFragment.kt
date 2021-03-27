@@ -1,5 +1,6 @@
 package com.project.stonktracker
 
+import android.graphics.drawable.Drawable
 import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -9,6 +10,7 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -81,10 +83,38 @@ class TransactionFragment : Fragment() {
 
         binding.buttonBuy.setOnClickListener {
             buyStatus = true
+
+            var backNeutral = resources.getDrawable(R.drawable.smooth_background_neutral)
+            var backBuy= resources.getDrawable(R.drawable.smooth_background_buy)
+
+            binding.buttonBuy.setBackgroundDrawable(backBuy)
+            binding.buttonSell.setBackgroundDrawable(backNeutral)
+            binding.buttonSave.setBackgroundDrawable(backBuy)
+
+            var green = ContextCompat.getColor(requireContext(), R.color.buy_000)
+            var neutral = ContextCompat.getColor(requireContext(), R.color.neutral_000)
+
+            binding.buttonBuy.setTextColor(green)
+            binding.buttonSell.setTextColor(neutral)
+            binding.buttonSave.setTextColor(green)
         }
 
         binding.buttonSell.setOnClickListener {
             buyStatus = false
+
+            var backNeutral = resources.getDrawable(R.drawable.smooth_background_neutral)
+            var backSell = resources.getDrawable(R.drawable.smooth_background_sell)
+
+            binding.buttonBuy.setBackgroundDrawable(backNeutral)
+            binding.buttonSell.setBackgroundDrawable(backSell)
+            binding.buttonSave.setBackgroundDrawable(backSell)
+
+            var red = ContextCompat.getColor(requireContext(), R.color.sell_000)
+            var neutral = ContextCompat.getColor(requireContext(), R.color.neutral_000)
+
+            binding.buttonBuy.setTextColor(neutral)
+            binding.buttonSell.setTextColor(red)
+            binding.buttonSave.setTextColor(red)
         }
     }
 

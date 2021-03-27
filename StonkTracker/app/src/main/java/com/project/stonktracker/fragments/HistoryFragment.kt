@@ -40,7 +40,7 @@ class HistoryFragment : Fragment() {
         recyclerView.layoutManager = GridLayoutManager(view?.context, 1)
 
         historyVM.getHistory().observe(viewLifecycleOwner, {history ->
-            recyclerView.adapter = HistoryFragmentAdapter(ArrayList(history), )
+            recyclerView.adapter = HistoryFragmentAdapter(ArrayList(history))
         })
 
         return binding.root
