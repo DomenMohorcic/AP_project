@@ -50,5 +50,26 @@ class HistoryRepository(private val stonkDao: StonkDao) {
 
     fun insert(ph: PurchaseHistory) {
         stonkDao.phInsert(ph)
+
+        // update stockInfo table
+        if(stonkDao.siCheckTicker(ph.ticker) == 1) {
+            val si = stonkDao.siGetTicker(ph.ticker)
+            val prev_price = si.shares * si.avg_price
+            var new_price = when(ph.buy) {
+                true -> prev_price + ph.quantity * ph.price
+                false -> prev_price - ph.quantity * ph.price
+            }
+            var new_shares = when(ph.buy) {
+                true -> si.shares + ph.quantity
+                false -> si.shares - ph.quantity
+            }
+            si.avg_price = new_price / new_shares
+            si.shares = new_shares
+            stonkDao.siUpdate(si)
+        } else {
+            // naredi api za ime in webURL klic -> http://www.google.com/finance?&q={ticker}
+            val si = StockInfo(ph.ticker, "No name yet", "androidforums.com", ph.quantity, ph.price)
+            stonkDao.siInsert(si)
+        }
     }
 }

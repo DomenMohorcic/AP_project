@@ -25,7 +25,7 @@ abstract class StonkDatabase: RoomDatabase() {
 @Entity(tableName = "purchaseHistory")
 data class PurchaseHistory (
     @PrimaryKey(autoGenerate = true) var pID: Int = 0,
-    @ColumnInfo var ticker: String = "null",
+    @ColumnInfo var ticker: String = "",
     @ColumnInfo var date: String = "",
     @ColumnInfo var quantity: Double = 0.0,
     @ColumnInfo var price: Double = 0.0,
@@ -38,7 +38,7 @@ data class StockInfo (
     @PrimaryKey val ticker: String = "",
     @ColumnInfo var full_name: String = "",
     @ColumnInfo var webURL: String = "",
-    @ColumnInfo var shares: Int = 0,
+    @ColumnInfo var shares: Double = 0.0,
     @ColumnInfo var avg_price: Double = 0.0
 )
 
@@ -82,6 +82,9 @@ interface StonkDao {
 
     @Query("SELECT * FROM stockInfo WHERE shares > 0")
     fun siGetStocksWithShares(): List<StockInfo>
+
+    @Query("SELECT COUNT(1) FROM stockInfo WHERE ticker LIKE :ticker")
+    fun siCheckTicker(ticker: String): Int
 
     @Query("SELECT * FROM stockInfo")
     fun siGetAllInstances(): List<StockInfo>
