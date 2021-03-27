@@ -53,7 +53,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     /* Double back press for exit */
-    private var doublePressed: Boolean = false
+    /*private var doublePressed: Boolean = false
     override fun onBackPressed() {
         if(doublePressed) { super.onBackPressed() }
         else {
@@ -61,5 +61,5 @@ class MainActivity : AppCompatActivity() {
             Toast.makeText(this, "Click BACK again to exit", Toast.LENGTH_SHORT).show();
             Handler().postDelayed(Runnable {doublePressed = false}, 2000)
         }
-    }
+    }*/
 }
