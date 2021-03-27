@@ -2,6 +2,8 @@ package com.project.stonktracker
 
 import android.content.Context
 import androidx.room.*
+import androidx.room.migration.Migration
+import androidx.sqlite.db.SupportSQLiteDatabase
 
 @Database(entities = [PurchaseHistory::class, StockInfo::class], version = 1, exportSchema = false)
 abstract class StonkDatabase: RoomDatabase() {
@@ -10,9 +12,17 @@ abstract class StonkDatabase: RoomDatabase() {
     companion object {
         private var INSTANCE: StonkDatabase? = null
 
+        // When/if we decide to change database
+        val MIGRATION_1_2 = object : Migration(1, 2) {
+            override fun migrate(db: SupportSQLiteDatabase) {
+                db.execSQL("ALTER TABLE stockInfo ADD COLUMN last_price DOUBLE NOT NULL DEFAULT 0.0")
+            }
+        }
+
         fun getStonkDatabase(context: Context): StonkDatabase? {
             if(INSTANCE == null) {
-                INSTANCE = Room.databaseBuilder(context.applicationContext, StonkDatabase::class.java, "ph-database").build()
+                INSTANCE = Room.databaseBuilder(context.applicationContext, StonkDatabase::class.java, "ph-database")
+                    .addMigrations(MIGRATION_1_2).build()
             }
             return INSTANCE
         }
@@ -36,6 +46,7 @@ data class StockInfo (
     @ColumnInfo var full_name: String = "",
     @ColumnInfo var webURL: String = "",
     @ColumnInfo var shares: Int = 0
+    //@ColumnInfo var last_price: Double = 0.0
 )
 
 @Dao
@@ -87,4 +98,7 @@ interface StonkDao {
 
     @Insert(entity = StockInfo::class)
     fun siInsert(si: StockInfo)
+
+    @Update(entity = StockInfo::class)
+    fun siUpdate(si: StockInfo)
 }
