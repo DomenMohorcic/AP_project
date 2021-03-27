@@ -1,31 +1,21 @@
 package com.project.stonktracker
 
-import android.app.Activity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
-import com.bumptech.glide.Glide
 
-class HistoryAdapter(private val historyInfo: ArrayList<PurchaseHistory>) :
-    RecyclerView.Adapter<HistoryAdapter.ViewHolder>() {
+class HistoryFragmentAdapter(private val historyInfo: ArrayList<PurchaseHistory>) :
+    RecyclerView.Adapter<HistoryFragmentAdapter.ViewHolder>() {
 
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
-        val viewTicker: TextView
-        val viewShares: TextView
-        val viewDate: TextView
-        val logo: ImageView
-        val total: TextView
-
-        init {
-            viewTicker = view.findViewById(R.id.typeAndTicker)
-            viewShares = view.findViewById(R.id.sharesAndPrice)
-            viewDate = view.findViewById(R.id.dateText)
-            logo = view.findViewById(R.id.imageViewLogo)
-            total = view.findViewById(R.id.totalPrice)
-        }
+        val viewTicker: TextView = view.findViewById(R.id.typeAndTicker)
+        val viewShares: TextView = view.findViewById(R.id.sharesAndPrice)
+        val viewDate: TextView = view.findViewById(R.id.dateText)
+        val logo: ImageView = view.findViewById(R.id.imageViewLogo)
+        val total: TextView = view.findViewById(R.id.totalPrice)
     }
 
     override fun onCreateViewHolder(viewGroup: ViewGroup, viewType: Int): ViewHolder {

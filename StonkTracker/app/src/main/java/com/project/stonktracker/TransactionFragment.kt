@@ -17,7 +17,7 @@ class TransactionFragment : Fragment() {
         fun newInstance() = TransactionFragment()
     }
 
-    private lateinit var viewModel: MainViewModel
+    private lateinit var viewModel: PortfolioVM
     private lateinit var recyclerView: RecyclerView
 
     // binding
@@ -34,7 +34,7 @@ class TransactionFragment : Fragment() {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        viewModel = ViewModelProvider(this).get(MainViewModel::class.java)
+        viewModel = ViewModelProvider(this).get(PortfolioVM::class.java)
         // TODO: Use the ViewModel
 
         binding.editDate.setOnClickListener {

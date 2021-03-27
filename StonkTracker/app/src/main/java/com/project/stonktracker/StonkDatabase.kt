@@ -12,17 +12,10 @@ abstract class StonkDatabase: RoomDatabase() {
     companion object {
         private var INSTANCE: StonkDatabase? = null
 
-        // When/if we decide to change database
-        val MIGRATION_1_2 = object : Migration(1, 2) {
-            override fun migrate(db: SupportSQLiteDatabase) {
-                db.execSQL("ALTER TABLE stockInfo ADD COLUMN last_price DOUBLE NOT NULL DEFAULT 0.0")
-            }
-        }
-
         fun getStonkDatabase(context: Context): StonkDatabase? {
             if(INSTANCE == null) {
                 INSTANCE = Room.databaseBuilder(context.applicationContext, StonkDatabase::class.java, "ph-database")
-                    .addMigrations(MIGRATION_1_2).build()
+                    .build()
             }
             return INSTANCE
         }
@@ -45,8 +38,8 @@ data class StockInfo (
     @PrimaryKey val ticker: String = "",
     @ColumnInfo var full_name: String = "",
     @ColumnInfo var webURL: String = "",
-    @ColumnInfo var shares: Int = 0
-    //@ColumnInfo var last_price: Double = 0.0
+    @ColumnInfo var shares: Int = 0,
+    @ColumnInfo var avg_price: Double = 0.0
 )
 
 @Dao
