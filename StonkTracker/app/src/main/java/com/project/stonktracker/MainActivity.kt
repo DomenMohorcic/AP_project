@@ -39,7 +39,7 @@ class MainActivity : AppCompatActivity() {
                 R.id.nav_home -> selectedFragment = PortfolioFragment()
                 R.id.nav_history -> selectedFragment = HistoryFragment()
                 R.id.nav_search -> selectedFragment = SearchFragment()
-                R.id.nav_stats -> selectedFragment = TransactionFragment()
+                R.id.nav_stats -> selectedFragment = PortfolioFragment() // TransactionFragment()
             }
 
             Log.i("fragment_log", "$selectedFragment")

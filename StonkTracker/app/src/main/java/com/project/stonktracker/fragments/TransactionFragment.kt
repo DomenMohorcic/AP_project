@@ -86,7 +86,6 @@ class TransactionFragment : Fragment() {
         binding.buttonSell.setOnClickListener {
             buyStatus = false
         }
-
     }
 
     override fun onDestroyView() {

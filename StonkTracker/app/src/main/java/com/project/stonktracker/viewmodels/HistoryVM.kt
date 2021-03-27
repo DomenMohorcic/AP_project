@@ -63,7 +63,8 @@ class HistoryRepository(private val stonkDao: StonkDao) {
                 true -> si.shares + ph.quantity
                 false -> si.shares - ph.quantity
             }
-            si.avg_price = new_price / new_shares
+            if(new_shares < 0.00001) {si.avg_price = 0.0}
+            else {si.avg_price = new_price / new_shares}
             si.shares = new_shares
             stonkDao.siUpdate(si)
         } else {

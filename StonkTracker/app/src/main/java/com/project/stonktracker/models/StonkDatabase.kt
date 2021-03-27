@@ -86,7 +86,7 @@ interface StonkDao {
     @Query("SELECT COUNT(1) FROM stockInfo WHERE ticker LIKE :ticker")
     fun siCheckTicker(ticker: String): Int
 
-    @Query("SELECT * FROM stockInfo")
+    @Query("SELECT * FROM stockInfo ORDER BY ticker ASC")
     fun siGetAllInstances(): List<StockInfo>
 
     @Query("SELECT COUNT(*) FROM stockInfo")

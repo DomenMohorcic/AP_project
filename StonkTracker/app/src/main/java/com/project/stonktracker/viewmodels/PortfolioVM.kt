@@ -50,7 +50,7 @@ class PortfolioVM : ViewModel() {
 
 class PortfolioRepository(private val stonkDao: StonkDao) {
     fun getPortfolio(): List<StockInfo> {
-        return stonkDao.siGetAllInstances()
+        return stonkDao.siGetStocksWithShares()
     }
 
     fun getCount(): Int {
