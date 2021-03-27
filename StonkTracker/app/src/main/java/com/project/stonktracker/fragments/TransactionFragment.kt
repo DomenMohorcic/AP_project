@@ -1,23 +1,26 @@
 package com.project.stonktracker
 
-import android.graphics.drawable.Drawable
-import androidx.lifecycle.ViewModelProvider
+import android.app.DatePickerDialog
+import android.os.Build
 import android.os.Bundle
-import androidx.fragment.app.Fragment
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
-import androidx.activity.viewModels
+import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
-import androidx.recyclerview.widget.GridLayoutManager
-import androidx.recyclerview.widget.RecyclerView
-import com.project.stonktracker.databinding.PortfolioFragmentBinding
 import com.project.stonktracker.databinding.TransactionFragmentBinding
 import com.project.stonktracker.viewmodels.Company
 import com.project.stonktracker.viewmodels.FragmentVM
+import java.text.SimpleDateFormat
+import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
+import java.time.format.FormatStyle
+import java.util.*
+
 
 class TransactionFragment : Fragment() {
     companion object {
@@ -36,7 +39,12 @@ class TransactionFragment : Fragment() {
     // This property is only valid between onCreateView and onDestroyView.
     private val binding get() = _binding!!
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+    @RequiresApi(Build.VERSION_CODES.O)
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
         container?.removeAllViews() // else previous fragment is visible in background
         _binding = TransactionFragmentBinding.inflate(inflater, container, false)
 
@@ -44,17 +52,34 @@ class TransactionFragment : Fragment() {
         binding.stockName = "${company?.ticker} - ${company?.name}"
 
         // set defualt dateText that will be today's day..
-        dateText = binding.editDate.text.toString()
+        val currentDateTime = LocalDateTime.now()
+        binding.editDate.setText(currentDateTime.format(DateTimeFormatter.ofLocalizedDate(FormatStyle.MEDIUM)))
 
         return binding.root
     }
-
+    
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
 
         binding.editDate.setOnClickListener {
-            // TODO
-            // dateText = ...
+            val cldr: Calendar = Calendar.getInstance()
+            val day: Int = cldr.get(Calendar.DAY_OF_MONTH)
+            val month: Int = cldr.get(Calendar.MONTH)
+            val year: Int = cldr.get(Calendar.YEAR)
+            // date picker dialog
+            // date picker dialog
+            var picker = DatePickerDialog(requireContext(),
+                { view, year, monthOfYear, dayOfMonth ->
+                    var dateText = dayOfMonth.toString() + "/" + (monthOfYear + 1) + "/" + year
+                    val formatter = SimpleDateFormat("dd/MM/yyyy")
+                    val date = formatter.parse(dateText)
+                    // Log.i("date_info", SimpleDateFormat("dd MMM yyyy").format(date))
+                    binding.editDate.setText(SimpleDateFormat("dd MMM yyyy").format(date))
+                },
+                year,
+                month,
+                day)
+            picker.show()
         }
 
         binding.buttonSave.setOnClickListener {
@@ -62,9 +87,10 @@ class TransactionFragment : Fragment() {
             var price = if (binding.editPrice.text.toString() != "") binding.editPrice.text.toString().toDouble() else 0.0
             var fees = if (binding.editFees.text.toString() != "") binding.editFees.text.toString().toDouble() else 0.0
 
+
             var ph: PurchaseHistory = PurchaseHistory(0,
                 company.ticker,
-                dateText,
+                binding.editDate.text.toString(),
                 shares,
                 price,
                 fees,
