@@ -1,11 +1,14 @@
 package com.project.stonktracker
 
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.widget.addTextChangedListener
+import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.android.volley.Request
 import com.android.volley.RequestQueue
 import com.android.volley.Response
@@ -24,6 +27,8 @@ class SearchFragment : Fragment() {
 
     // for Volley requests
     private lateinit var queue: RequestQueue
+    private var searchResults: ArrayList<String> = ArrayList()
+    private lateinit var recyclerView: RecyclerView
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         container?.removeAllViews() // else previous fragment is visible in background
@@ -41,11 +46,21 @@ class SearchFragment : Fragment() {
                     var str = ""
                     for(i in 0 until arr.length()) {
                         var obj = arr.getJSONObject(i)
-                        str += "${i}: ${obj.getString("1. symbol")} - ${obj.getString("2. name")} (${obj.getString("4. region")})\n"
+                        var textToAdd = "${i}: ${obj.getString("1. symbol")} - ${obj.getString("2. name")} (${obj.getString("4. region")})\n"
+                        str += textToAdd
+
+                        searchResults.add("${obj.getString("1. symbol")} - ${obj.getString("2. name")}")
                     }
-                    binding.textView.text = str
+                    // binding.textView.text = str
+                    // RecyclerView for showing portfolio data
+                    recyclerView = binding.recyclerViewSearch
+                    recyclerView.setHasFixedSize(true)
+                    recyclerView.layoutManager = GridLayoutManager(view?.context, 1)
+                    recyclerView.adapter = SearchFragmentAdapter(searchResults)
+
+                    searchResults = ArrayList()
                 },
-                { error -> binding.textView.text = error.toString() }))
+                { error -> Log.e("request_error", "this b*tch empty") }))
         }
 
         return binding.root

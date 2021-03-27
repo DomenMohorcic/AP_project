@@ -42,7 +42,7 @@
             android:autofillHints="@string/hint_fees_in"
             android:hint="@string/hint_fees_in"
             android:inputType="numberDecimal"
-            app:layout_constraintBottom_toTopOf="@+id/button4"
+            app:layout_constraintBottom_toTopOf="@+id/buttonSave"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/editPrice" />
 
@@ -75,7 +75,7 @@
             app:layout_constraintTop_toBottomOf="@+id/tickerName" />
 
         <Button
-            android:id="@+id/button4"
+            android:id="@+id/buttonSave"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="32dp"

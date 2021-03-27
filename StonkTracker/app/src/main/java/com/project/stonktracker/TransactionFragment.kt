@@ -17,9 +17,6 @@ class TransactionFragment : Fragment() {
         fun newInstance() = TransactionFragment()
     }
 
-    private lateinit var viewModel: MainViewModel
-    private lateinit var recyclerView: RecyclerView
-
     // binding
     private var _binding: TransactionFragmentBinding? = null
     // This property is only valid between onCreateView and onDestroyView.
@@ -34,10 +31,20 @@ class TransactionFragment : Fragment() {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        viewModel = ViewModelProvider(this).get(MainViewModel::class.java)
-        // TODO: Use the ViewModel
 
         binding.editDate.setOnClickListener {
+
+        }
+
+        binding.buttonSave.setOnClickListener {
+
+        }
+
+        binding.buttonBuy.setOnClickListener {
+
+        }
+
+        binding.buttonSell.setOnClickListener {
 
         }
 
