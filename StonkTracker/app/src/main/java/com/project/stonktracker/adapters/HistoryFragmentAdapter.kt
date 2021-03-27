@@ -32,8 +32,6 @@ class HistoryFragmentAdapter(private val historyInfo: ArrayList<PurchaseHistory>
 
         // TODO order before display! (can do it via DB call...)
 
-        val price = 120.65 // TODO API call
-
         // TODO get stock info from TICKER!
         // val si: StockInfo = siGetTicker(ph.ticker)
 
@@ -44,7 +42,7 @@ class HistoryFragmentAdapter(private val historyInfo: ArrayList<PurchaseHistory>
             .load("https://logo.clearbit.com/${si.webURL}")
             .into(holder.logo)*/
         holder.viewTicker.text = "$transaction ${ph.ticker}"
-        holder.viewShares.text = "${ph.quantity} shares @ ${ph.price}€"
+        holder.viewShares.text = "${ph.quantity} shares @ ${String.format("%.2f", ph.price)}€"
         holder.viewDate.text = ph.date
         holder.total.text = "$transToken${String.format("%.2f", (ph.quantity * ph.price))}€"
     }
