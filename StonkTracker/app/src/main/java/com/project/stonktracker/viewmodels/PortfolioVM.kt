@@ -14,14 +14,15 @@ class PortfolioVM : ViewModel() {
     private var stocks = MutableLiveData<List<StockInfo>>()
 
     fun init() {
-        /*insert(StockInfo("T", "AT&T", "att.com", 50))
-        insert(StockInfo("AAPL", "Apple Inc.", "apple.com", 25))
-        insert(StockInfo("STB", "Starbucks", "starbucks.com", 45))
-        insert(StockInfo("CSCO", "Cisco", "cisco.com", 42))
-        insert(StockInfo("KO", "Coca-Cola", "coca-colacompany.com", 50))
-        insert(StockInfo("VICI", "VICI Properties", "viciproperties.com", 69))
-        insert(StockInfo("TSLA", "Tesla", "tesla.com", 42069))
-        insert(StockInfo("MCD", "McDonald's Corp", "mcdonalds.com", 1))*/
+        /* insert(StockInfo("T", "AT&T", "att.com", 50.0, 5000.0))
+        insert(StockInfo("AAPL", "Apple Inc.", "apple.com", 25.0, 5000.0))
+        insert(StockInfo("STB", "Starbucks", "starbucks.com", 45.0, 5000.0))
+        insert(StockInfo("CSCO", "Cisco", "cisco.com", 42.0, 5000.0))
+        insert(StockInfo("KO", "Coca-Cola", "coca-colacompany.com", 50.0, 5000.0))
+        insert(StockInfo("VICI", "VICI Properties", "viciproperties.com", 69.0, 5000.0))
+        insert(StockInfo("TSLA", "Tesla", "tesla.com", 42069.0, 5000.0))
+        insert(StockInfo("MCD", "McDonald's Corp", "mcdonalds.com", 1.0, 5000.0)) */
+
         viewModelScope.launch(Dispatchers.IO) {
             stocks.postValue(repository.getPortfolio())
         }

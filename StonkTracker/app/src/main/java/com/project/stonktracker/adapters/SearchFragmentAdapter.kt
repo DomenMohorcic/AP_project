@@ -39,7 +39,7 @@ class SearchFragmentAdapter(private val searchResults: ArrayList<Company>, priva
 
             val fragmentTransaction = activity.supportFragmentManager.beginTransaction()
             fragmentTransaction.replace(R.id.fragment, TransactionFragment())
-            fragmentTransaction.addToBackStack(null)
+            // fragmentTransaction.addToBackStack(null)
             fragmentTransaction.commit()
         }
     }

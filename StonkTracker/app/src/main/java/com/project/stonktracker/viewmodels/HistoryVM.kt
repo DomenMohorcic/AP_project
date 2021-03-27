@@ -10,6 +10,7 @@ class HistoryVM : ViewModel() {
     lateinit var repository: HistoryRepository
 
     private var history = MutableLiveData<List<PurchaseHistory>>()
+    private var stockInfo = MutableLiveData<StockInfo>()
 
     fun init() {
         /*insert(PurchaseHistory(0, "AAPL", "Oct 31st 2020", 80.0, 120.86, 0.0, true))
