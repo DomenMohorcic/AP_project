@@ -39,7 +39,7 @@ class PortfolioFragment : Fragment() {
         recyclerView.layoutManager = GridLayoutManager(view?.context, 1)
 
         // Observe the stock data in portfolioVM
-        portfolioVM.stocks.observe(viewLifecycleOwner, {stocks ->
+        portfolioVM.getStocks().observe(viewLifecycleOwner, {stocks ->
             recyclerView.adapter = PortfolioFragmentAdapter(ArrayList(stocks))
         })
 

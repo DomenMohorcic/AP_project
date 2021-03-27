@@ -11,7 +11,7 @@ import kotlinx.coroutines.launch
 class PortfolioVM : ViewModel() {
     lateinit var repository: PortfolioRepository
 
-    var stocks = MutableLiveData<List<StockInfo>>()
+    private var stocks = MutableLiveData<List<StockInfo>>()
 
     var count: Int = 0
 
@@ -39,6 +39,10 @@ class PortfolioVM : ViewModel() {
         viewModelScope.launch(Dispatchers.IO) {
             stocks.postValue(repository.getPortfolio())
         }
+    }
+
+    fun getStocks(): MutableLiveData<List<StockInfo>> {
+        return stocks
     }
 
     /* Insert new stock into stock info database */

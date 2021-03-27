@@ -15,7 +15,7 @@ abstract class StonkDatabase: RoomDatabase() {
         // When/if we decide to change database
         val MIGRATION_1_2 = object : Migration(1, 2) {
             override fun migrate(db: SupportSQLiteDatabase) {
-                db.execSQL("ALTER TABLE stockInfo ADD COLUMN last_price DOUBLE DEFAULT 0.0")
+                db.execSQL("ALTER TABLE stockInfo ADD COLUMN last_price DOUBLE NOT NULL DEFAULT 0.0")
             }
         }
 
