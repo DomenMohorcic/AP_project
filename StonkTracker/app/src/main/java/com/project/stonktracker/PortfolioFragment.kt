@@ -27,6 +27,10 @@ class PortfolioFragment : Fragment() {
         container?.removeAllViews() // else previous fragment is visible in background
         _binding = PortfolioFragmentBinding.inflate(inflater, container, false)
 
+        // TODO Calculate/Get from database
+        binding.portfolioValue = "1,865.65€"
+        binding.portfolioGains = "+250.15€ (+15.85%)"
+
         // RecyclerView for showing portfolio data
         recyclerView = binding.recyclerViewMain
         recyclerView.setHasFixedSize(true)
