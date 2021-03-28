@@ -26,7 +26,7 @@ class HistoryFragmentAdapter(private val historyInfo: ArrayList<PurchaseHistory>
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        // get element from dataset at this position and replace the
+        // get element from data set at this position and replace the
         // content of the view with that element
 
         // TODO get info from ViewModel!

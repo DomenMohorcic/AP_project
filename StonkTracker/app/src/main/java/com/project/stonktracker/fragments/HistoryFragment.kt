@@ -45,12 +45,15 @@ class HistoryFragment : Fragment() {
 
         historyVM.getHistory().observe(viewLifecycleOwner, {history ->
             hist = history
+            // tickerURL = portfolioVM.getTickersAndURLs().value!!
             if(this::tickerURL.isInitialized) {
                 recyclerView.adapter = HistoryFragmentAdapter(ArrayList(hist), tickerURL)
             }
         })
+
         portfolioVM.getTickersAndURLs().observe(viewLifecycleOwner, {tickerAndURL ->
             tickerURL = tickerAndURL
+            // hist = historyVM.getHistory().value!!
             if(this::hist.isInitialized) {
                 recyclerView.adapter = HistoryFragmentAdapter(ArrayList(hist), tickerURL)
             }

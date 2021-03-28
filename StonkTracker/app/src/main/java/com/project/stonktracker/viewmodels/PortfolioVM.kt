@@ -37,6 +37,13 @@ class PortfolioVM : ViewModel() {
         return tickers_web
     }
 
+    fun updateStocks() {
+        viewModelScope.launch(Dispatchers.IO) {
+            stocks.postValue(repository.getPortfolio())
+            tickers_web.postValue(repository.getTickersAndURLs())
+        }
+    }
+
     /* Insert new stock into stock info database */
     fun insert(si: StockInfo) {
         viewModelScope.launch(Dispatchers.IO) {

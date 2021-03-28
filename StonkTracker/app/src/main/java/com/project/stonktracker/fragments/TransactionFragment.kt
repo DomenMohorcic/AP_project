@@ -12,6 +12,8 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import com.google.android.material.bottomnavigation.BottomNavigationView
+import com.google.android.material.internal.NavigationMenu
 import com.project.stonktracker.databinding.TransactionFragmentBinding
 import com.project.stonktracker.viewmodels.Company
 import com.project.stonktracker.viewmodels.FragmentVM
@@ -28,6 +30,7 @@ class TransactionFragment : Fragment() {
 
     private val fragmentVM: FragmentVM by activityViewModels()
     private val historyVM: HistoryVM by activityViewModels()
+    private val portfolioVM: PortfolioVM by activityViewModels()
 
     private lateinit var company: Company
     private lateinit var dateText: String
@@ -48,7 +51,7 @@ class TransactionFragment : Fragment() {
         _binding = TransactionFragmentBinding.inflate(inflater, container, false)
 
         company = fragmentVM.getCompany()
-        binding.stockName = "${company?.ticker} - ${company?.name}"
+        binding.stockName = "${company.ticker} - ${company.name}"
 
         // set defualt dateText that will be today's day..
         val currentDateTime = LocalDateTime.now()
@@ -95,15 +98,22 @@ class TransactionFragment : Fragment() {
                 fees,
                 buyStatus
             )
+
+            // add to database via MVVM
             historyVM.insert(ph)
+            portfolioVM.updateStocks()
 
             // After added transaction go to HISTORY
             var activity: AppCompatActivity = it.context as AppCompatActivity
 
             val fragmentTransaction = activity.supportFragmentManager.beginTransaction()
-            fragmentTransaction.replace(R.id.fragment, HistoryFragment())
-            fragmentTransaction.addToBackStack(null)
+            fragmentTransaction.replace(R.id.fragment, SearchFragment())
+            // fragmentTransaction.addToBackStack(null)
             fragmentTransaction.commit()
+
+            // check the right navigation item...
+            var nav = getActivity()?.findViewById<BottomNavigationView>(R.id.bottomNavigationView)
+            nav!!.menu.getItem(2).isChecked = true
         }
 
         binding.buttonBuy.setOnClickListener {

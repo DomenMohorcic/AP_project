@@ -60,6 +60,11 @@ class MainActivity : AppCompatActivity() {
 
             return@setOnNavigationItemSelectedListener true
         }
+
+        portfolioVM.getStocks().observe(this, {stocks ->
+            binding.mainLayout.invalidate()
+        })
+
     }
 
     /* Double back press for exit */
