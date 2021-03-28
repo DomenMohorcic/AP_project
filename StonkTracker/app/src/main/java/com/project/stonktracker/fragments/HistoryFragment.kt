@@ -19,11 +19,15 @@ class HistoryFragment : Fragment() {
     }
 
     private val historyVM: HistoryVM by activityViewModels()
+    private val portfolioVM: PortfolioVM by activityViewModels()
     private lateinit var recyclerView: RecyclerView
 
     // binding
     private var _binding: HistoryFragmentBinding? = null
     private val binding get() = _binding!!
+
+    private lateinit var hist: List<PurchaseHistory>
+    private lateinit var tickerURL: HashMap<String, String>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -40,7 +44,16 @@ class HistoryFragment : Fragment() {
         recyclerView.layoutManager = GridLayoutManager(view?.context, 1)
 
         historyVM.getHistory().observe(viewLifecycleOwner, {history ->
-            recyclerView.adapter = HistoryFragmentAdapter(ArrayList(history))
+            hist = history
+            if(this::tickerURL.isInitialized) {
+                recyclerView.adapter = HistoryFragmentAdapter(ArrayList(hist), tickerURL)
+            }
+        })
+        portfolioVM.getTickersAndURLs().observe(viewLifecycleOwner, {tickerAndURL ->
+            tickerURL = tickerAndURL
+            if(this::hist.isInitialized) {
+                recyclerView.adapter = HistoryFragmentAdapter(ArrayList(hist), tickerURL)
+            }
         })
 
         return binding.root

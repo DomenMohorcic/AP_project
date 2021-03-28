@@ -12,6 +12,7 @@ class PortfolioVM : ViewModel() {
     lateinit var repository: PortfolioRepository
 
     private var stocks = MutableLiveData<List<StockInfo>>()
+    private var tickers_web = MutableLiveData<HashMap<String, String>>()
 
     fun init() {
         /* insert(StockInfo("T", "AT&T", "att.com", 50.0, 5000.0))
@@ -25,11 +26,15 @@ class PortfolioVM : ViewModel() {
 
         viewModelScope.launch(Dispatchers.IO) {
             stocks.postValue(repository.getPortfolio())
+            tickers_web.postValue(repository.getTickersAndURLs())
         }
     }
 
     fun getStocks(): MutableLiveData<List<StockInfo>> {
         return stocks
+    }
+    fun getTickersAndURLs(): MutableLiveData<HashMap<String, String>> {
+        return tickers_web
     }
 
     /* Insert new stock into stock info database */
@@ -37,6 +42,7 @@ class PortfolioVM : ViewModel() {
         viewModelScope.launch(Dispatchers.IO) {
             repository.insert(si)
             stocks.postValue(repository.getPortfolio())
+            tickers_web.postValue(repository.getTickersAndURLs())
         }
     }
 
@@ -45,6 +51,7 @@ class PortfolioVM : ViewModel() {
         viewModelScope.launch(Dispatchers.IO) {
             repository.update(si)
             stocks.postValue(repository.getPortfolio())
+            tickers_web.postValue(repository.getTickersAndURLs())
         }
     }
 }
@@ -52,6 +59,15 @@ class PortfolioVM : ViewModel() {
 class PortfolioRepository(private val stonkDao: StonkDao) {
     fun getPortfolio(): List<StockInfo> {
         return stonkDao.siGetStocksWithShares()
+    }
+
+    fun getTickersAndURLs(): HashMap<String, String> {
+        val tau = stonkDao.siGetTickersAndURLs()
+        var hm = HashMap<String, String>()
+        tau.forEach { info ->
+            hm[info.ticker] = info.webURL
+        }
+        return hm
     }
 
     fun getCount(): Int {

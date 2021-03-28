@@ -28,8 +28,6 @@ class SearchFragment : Fragment() {
     private var _binding: SearchFragmentBinding? = null
     private val binding get() = _binding!!
 
-    // for Volley requests
-    private lateinit var queue: RequestQueue
     private var searchResults: ArrayList<Company> = ArrayList()
     private lateinit var recyclerView: RecyclerView
     private val fragmentVM: FragmentVM by activityViewModels()
@@ -38,25 +36,18 @@ class SearchFragment : Fragment() {
         container?.removeAllViews() // else previous fragment is visible in background
         _binding = SearchFragmentBinding.inflate(inflater, container, false)
 
-        queue = Volley.newRequestQueue(this.context)
-
         // makes API call - https://www.alphavantage.co/documentation/#symbolsearch
         binding.button.setOnClickListener {
             val q = binding.searchBox.text
-            val url = "https://www.alphavantage.co/query?function=SYMBOL_SEARCH&keywords=${q}&apikey=RTUYSN1G309FMPH2"
-            queue.add(JsonObjectRequest(Request.Method.GET, url, null,
+            val url = "https://www.alphavantage.co/query?function=SYMBOL_SEARCH&keywords=${q}&apikey=${KEY_VANTAGE}"
+            queue?.add(JsonObjectRequest(Request.Method.GET, url, null,
                 { response ->
                     if(response.has("bestMatches")) {
                         val arr = response.getJSONArray("bestMatches")
-                        var str = ""
                         for(i in 0 until arr.length()) {
                             var obj = arr.getJSONObject(i)
-                            var textToAdd = "${i}: ${obj.getString("1. symbol")} - ${obj.getString("2. name")} (${obj.getString("4. region")})\n"
-                            str += textToAdd
-
                             searchResults.add(Company(obj.getString("1. symbol"), obj.getString("2. name")))
                         }
-                        // binding.textView.text = str
                         // RecyclerView for showing portfolio data
                         recyclerView = binding.recyclerViewSearch
                         recyclerView.setHasFixedSize(true)
@@ -66,7 +57,7 @@ class SearchFragment : Fragment() {
                         searchResults = ArrayList()
                     }
                 },
-                { error -> Log.e("request_error", "this b*tch empty") }))
+                { error -> Log.e("request_error", error.toString()) }))
         }
 
         return binding.root
