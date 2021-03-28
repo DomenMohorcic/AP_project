@@ -17,4 +17,10 @@
     <color name="buy_000">#299F6C</color>
     <color name="sell_000">#EC4C30</color>
     <color name="neutral_000">#9F9E9E9E</color>
+
+
+    <!-- Lexi barve -->
+    <color name="primary_variant">#202F5B</color>
+    <color name="primary">#2C437C</color>
+    <color name="lines">#0F141F</color>
 </resources>
