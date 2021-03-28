@@ -9,7 +9,7 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 
-class HistoryFragmentAdapter(private val historyInfo: ArrayList<PurchaseHistory>) :
+class HistoryFragmentAdapter(private val historyInfo: ArrayList<PurchaseHistory>, private val webURL: HashMap<String, String>) :
     RecyclerView.Adapter<HistoryFragmentAdapter.ViewHolder>() {
 
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
@@ -40,9 +40,9 @@ class HistoryFragmentAdapter(private val historyInfo: ArrayList<PurchaseHistory>
         val transaction = if (ph.buy) "Buy" else "Sell"
         val transToken = if (ph.buy) "+" else "-"
 
-        /* Glide.with(holder.logo.context as Activity)
-            .load("https://logo.clearbit.com/${si.webURL}")
-            .into(holder.logo) */
+        Glide.with(holder.logo.context as Activity)
+            .load("https://logo.clearbit.com/${webURL[ph.ticker]}")
+            .into(holder.logo)
         holder.viewTicker.text = "$transaction ${ph.ticker}"
         holder.viewShares.text = "${ph.quantity} shares @ ${String.format("%.2f", ph.price)}€"
         holder.viewDate.text = ph.date

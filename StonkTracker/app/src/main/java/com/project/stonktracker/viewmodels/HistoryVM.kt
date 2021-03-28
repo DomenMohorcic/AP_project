@@ -1,8 +1,13 @@
 package com.project.stonktracker
 
+import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.android.volley.Request
+import com.android.volley.RequestQueue
+import com.android.volley.toolbox.JsonObjectRequest
+import com.android.volley.toolbox.Volley
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
@@ -49,9 +54,7 @@ class HistoryRepository(private val stonkDao: StonkDao) {
     }
 
     fun insert(ph: PurchaseHistory) {
-        stonkDao.phInsert(ph)
-
-        // update stockInfo table
+        // also updates stockInfo table
         if(stonkDao.siCheckTicker(ph.ticker) == 1) {
             val si = stonkDao.siGetTicker(ph.ticker)
             val prev_price = si.shares * si.avg_price
@@ -66,11 +69,28 @@ class HistoryRepository(private val stonkDao: StonkDao) {
             if(new_shares < 0.00001) {si.avg_price = 0.0}
             else {si.avg_price = new_price / new_shares}
             si.shares = new_shares
+
+            stonkDao.phInsert(ph)
             stonkDao.siUpdate(si)
         } else {
-            // naredi api za ime in webURL klic -> http://www.google.com/finance?&q={ticker}
-            val si = StockInfo(ph.ticker, "No name yet", "androidforums.com", ph.quantity, ph.price)
-            stonkDao.siInsert(si)
+            val url = "https://api.polygon.io/v1/meta/symbols/${ph.ticker}/company?&apiKey=${KEY_POLYGON}"
+            queue?.add(JsonObjectRequest(Request.Method.GET, url, null,
+                { response ->
+                    if(!response.has("status")) {
+                        val name: String = response.getString("name")
+                        val sector: String = response.getString("sector")
+                        val webURL: String = response.getString("url")
+                        val si = StockInfo(ph.ticker, name, sector, webURL, ph.quantity, ph.price)
+                        val t = Thread {
+                            stonkDao.phInsert(ph)
+                            stonkDao.siInsert(si)
+                        }
+                        t.start()
+                    } else {
+                        // API key usage error
+                    }
+                },
+                { error -> Log.e("request_error", error.toString()) }))
         }
     }
 }
