@@ -37,9 +37,15 @@ data class PurchaseHistory (
 data class StockInfo (
     @PrimaryKey val ticker: String = "",
     @ColumnInfo var full_name: String = "",
+    @ColumnInfo var sector: String = "",
     @ColumnInfo var webURL: String = "",
     @ColumnInfo var shares: Double = 0.0,
     @ColumnInfo var avg_price: Double = 0.0
+)
+
+data class InfoTickerUrl (
+    @ColumnInfo val ticker: String = "",
+    @ColumnInfo val webURL: String = ""
 )
 
 @Dao
@@ -88,6 +94,9 @@ interface StonkDao {
 
     @Query("SELECT * FROM stockInfo ORDER BY ticker ASC")
     fun siGetAllInstances(): List<StockInfo>
+
+    @Query("SELECT DISTINCT ticker, webURL FROM stockInfo")
+    fun siGetTickersAndURLs(): List<InfoTickerUrl>
 
     @Query("SELECT COUNT(*) FROM stockInfo")
     fun siCountInstances(): Int

@@ -8,9 +8,15 @@ import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
+import com.android.volley.RequestQueue
+import com.android.volley.toolbox.Volley
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.project.stonktracker.databinding.ActivityMainBinding
 import com.project.stonktracker.viewmodels.FragmentVM
+
+var queue: RequestQueue? = null
+var KEY_VANTAGE: String = "RTUYSN1G309FMPH2"
+var KEY_POLYGON: String = "Hd5NWeZJWpSOEQFfQdpj0yENXqlSkoYe"
 
 class MainActivity : AppCompatActivity() {
 
@@ -27,6 +33,8 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         portfolioVM.repository = PortfolioRepository(StonkDatabase.getStonkDatabase(this)!!.stonkDao())
         historyVM.repository = HistoryRepository(StonkDatabase.getStonkDatabase(this)!!.stonkDao())
+
+        queue = Volley.newRequestQueue(this)
 
         // hide text from tool bar
         // supportActionBar?.setDisplayShowTitleEnabled(false);
