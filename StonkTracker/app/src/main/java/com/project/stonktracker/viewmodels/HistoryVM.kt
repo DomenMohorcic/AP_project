@@ -1,6 +1,9 @@
 package com.project.stonktracker
 
 import android.util.Log
+import androidx.activity.viewModels
+import androidx.appcompat.app.AppCompatActivity
+import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -17,16 +20,6 @@ class HistoryVM : ViewModel() {
     private var history = MutableLiveData<List<PurchaseHistory>>()
 
     fun init() {
-        /*insert(PurchaseHistory(0, "AAPL", "Oct 31st 2020", 80.0, 120.86, 0.0, true))
-        insert(PurchaseHistory(0, "AAPL", "Oct 30th 2020", 32.0, 120.98, 0.0, true))
-        insert(PurchaseHistory(0, "AAPL", "Oct 29th 2020", 20.0, 180.86, 0.0, true))
-        insert(PurchaseHistory(0, "AAPL", "Oct 23rd 2020", 45.0, 150.86, 0.0, true))
-        insert(PurchaseHistory(0, "AAPL", "Aug 1st 2020", 10.0, 115.86, 0.0, true))
-        insert(PurchaseHistory(0, "AAPL", "Jun 15th 2020", 15.0, 110.86, 0.0, true))
-        insert(PurchaseHistory(0, "AAPL", "Jan 31st 2020", 10.0, 98.86, 0.0, true))
-        insert(PurchaseHistory(0, "AAPL", "Oct 25th 2018", 2.0, 70.86, 0.0, true))
-        insert(PurchaseHistory(0, "AAPL", "Mar 18th 2017", 5.0, 80.86, 0.0, true))
-        insert(PurchaseHistory(0, "AAPL", "Oct 2nd 2005", 1.0, 70.86, 0.0, true))*/
         viewModelScope.launch(Dispatchers.IO) {
             history.postValue(repository.getHistory())
         }
@@ -39,12 +32,15 @@ class HistoryVM : ViewModel() {
     fun insert(ph: PurchaseHistory) {
         viewModelScope.launch(Dispatchers.IO) {
             repository.insert(ph)
+            Log.i("fragment_observe", "Posting value...")
             history.postValue(repository.getHistory())
+            Log.i("fragment_observe", "DONE?")
         }
     }
 }
 
 class HistoryRepository(private val stonkDao: StonkDao) {
+
     fun getHistory(): List<PurchaseHistory> {
         return stonkDao.phGetAllInstances()
     }
@@ -53,7 +49,10 @@ class HistoryRepository(private val stonkDao: StonkDao) {
         return stonkDao.phCountInstances()
     }
 
+    // BE CAREFUL!!! --> USE ONLY IN THREADS
     fun insert(ph: PurchaseHistory) {
+        // var resultDone = false
+
         // also updates stockInfo table
         if(stonkDao.siCheckTicker(ph.ticker) == 1) {
             val si = stonkDao.siGetTicker(ph.ticker)
@@ -72,6 +71,7 @@ class HistoryRepository(private val stonkDao: StonkDao) {
 
             stonkDao.phInsert(ph)
             stonkDao.siUpdate(si)
+            // resultDone = true
         } else {
             val url = "https://api.polygon.io/v1/meta/symbols/${ph.ticker}/company?&apiKey=${KEY_POLYGON}"
             queue?.add(JsonObjectRequest(Request.Method.GET, url, null,
@@ -84,6 +84,8 @@ class HistoryRepository(private val stonkDao: StonkDao) {
                         val t = Thread {
                             stonkDao.phInsert(ph)
                             stonkDao.siInsert(si)
+                            Log.i("fragment_observe", "Actually saving to DB...")
+                            // resultDone = true
                         }
                         t.start()
                     } else {
@@ -92,5 +94,7 @@ class HistoryRepository(private val stonkDao: StonkDao) {
                 },
                 { error -> Log.e("request_error", error.toString()) }))
         }
+
+        // while (!resultDone) {}
     }
 }

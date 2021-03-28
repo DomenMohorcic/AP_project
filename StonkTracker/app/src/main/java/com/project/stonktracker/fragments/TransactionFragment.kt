@@ -100,20 +100,21 @@ class TransactionFragment : Fragment() {
             )
 
             // add to database via MVVM
+            Log.i("fragment_observe", "Saving transaction")
             historyVM.insert(ph)
-            portfolioVM.updateStocks()
+            // portfolioVM.updateStocks()
 
             // After added transaction go to HISTORY
             var activity: AppCompatActivity = it.context as AppCompatActivity
 
             val fragmentTransaction = activity.supportFragmentManager.beginTransaction()
-            fragmentTransaction.replace(R.id.fragment, SearchFragment())
+            fragmentTransaction.replace(R.id.fragment, PortfolioFragment())
             // fragmentTransaction.addToBackStack(null)
             fragmentTransaction.commit()
 
             // check the right navigation item...
             var nav = getActivity()?.findViewById<BottomNavigationView>(R.id.bottomNavigationView)
-            nav!!.menu.getItem(2).isChecked = true
+            nav!!.menu.getItem(0).isChecked = true
         }
 
         binding.buttonBuy.setOnClickListener {

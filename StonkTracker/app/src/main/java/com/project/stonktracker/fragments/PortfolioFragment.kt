@@ -2,6 +2,7 @@ package com.project.stonktracker
 
 import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -44,6 +45,7 @@ class PortfolioFragment : Fragment() {
 
         // Observe the stock data in portfolioVM
         portfolioVM.getStocks().observe(viewLifecycleOwner, {stocks ->
+            Log.i("fragment_observe", "portfolioVM in PortfolioFragment")
             recyclerView.adapter = PortfolioFragmentAdapter(ArrayList(stocks))
         })
 

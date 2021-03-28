@@ -24,7 +24,6 @@ class MainActivity : AppCompatActivity() {
     private lateinit var nav: BottomNavigationView
     private lateinit var selectedFragment: Fragment
 
-    // private val historyModel: HistoryViewModel by viewModels()
     private val portfolioVM: PortfolioVM by viewModels()
     private val historyVM: HistoryVM by viewModels()
     private val fragmentVM: FragmentVM by viewModels()
@@ -35,9 +34,6 @@ class MainActivity : AppCompatActivity() {
         historyVM.repository = HistoryRepository(StonkDatabase.getStonkDatabase(this)!!.stonkDao())
 
         queue = Volley.newRequestQueue(this)
-
-        // hide text from tool bar
-        // supportActionBar?.setDisplayShowTitleEnabled(false);
 
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
 
@@ -60,10 +56,6 @@ class MainActivity : AppCompatActivity() {
 
             return@setOnNavigationItemSelectedListener true
         }
-
-        portfolioVM.getStocks().observe(this, {stocks ->
-            binding.mainLayout.invalidate()
-        })
 
     }
 

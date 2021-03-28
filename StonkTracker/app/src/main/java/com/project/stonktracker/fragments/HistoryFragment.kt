@@ -2,6 +2,7 @@ package com.project.stonktracker
 
 import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -46,6 +47,7 @@ class HistoryFragment : Fragment() {
         historyVM.getHistory().observe(viewLifecycleOwner, {history ->
             hist = history
             // tickerURL = portfolioVM.getTickersAndURLs().value!!
+            Log.i("fragment_observe", "historyVM in HistoryFragment")
             if(this::tickerURL.isInitialized) {
                 recyclerView.adapter = HistoryFragmentAdapter(ArrayList(hist), tickerURL)
             }
@@ -54,6 +56,7 @@ class HistoryFragment : Fragment() {
         portfolioVM.getTickersAndURLs().observe(viewLifecycleOwner, {tickerAndURL ->
             tickerURL = tickerAndURL
             // hist = historyVM.getHistory().value!!
+            Log.i("fragment_observe", "portfolioVM in HistoryFragment")
             if(this::hist.isInitialized) {
                 recyclerView.adapter = HistoryFragmentAdapter(ArrayList(hist), tickerURL)
             }
