@@ -27,13 +27,12 @@
             android:layout_marginStart="16dp"
             android:layout_marginTop="16dp"
             android:layout_marginEnd="16dp"
-            android:layout_marginBottom="16dp"
             android:background="@drawable/smooth_background"
             android:orientation="vertical"
             android:paddingLeft="16dp"
+            android:paddingRight="16dp"
             android:paddingTop="8dp"
             android:paddingBottom="16dp"
-            app:layout_constraintBottom_toTopOf="@+id/recyclerViewMain"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
@@ -61,11 +60,23 @@
                 android:textSize="12sp" />
         </LinearLayout>
 
+        <TextView
+            android:id="@+id/invesmentTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="16dp"
+            android:text="@string/investments_text"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/linearLayoutHeader" />
+
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recyclerViewMain"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_marginStart="16dp"
+            android:layout_marginTop="16dp"
             android:layout_marginEnd="16dp"
             android:layout_marginBottom="16dp"
             android:background="@drawable/smooth_background"
@@ -73,7 +84,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.454"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/linearLayoutHeader" />
+            app:layout_constraintTop_toBottomOf="@+id/invesmentTextView" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

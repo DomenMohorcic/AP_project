@@ -11,6 +11,7 @@ import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.project.stonktracker.databinding.PortfolioFragmentBinding
+import com.project.stonktracker.viewmodels.FragmentVM
 import com.project.stonktracker.viewmodels.StocksVM
 
 class PortfolioFragment : Fragment() {
@@ -20,6 +21,7 @@ class PortfolioFragment : Fragment() {
 
     //private val portfolioVM: PortfolioVM by activityViewModels()
     private val stocksVM: StocksVM by activityViewModels()
+    private val fragmentVM: FragmentVM by activityViewModels()
 
     private lateinit var recyclerView: RecyclerView
 
@@ -49,7 +51,7 @@ class PortfolioFragment : Fragment() {
         // Observe the stock data in portfolioVM
         stocksVM.getStocks().observe(viewLifecycleOwner, {stocks ->
             Log.i("fragment_observe", "portfolioVM in PortfolioFragment")
-            recyclerView.adapter = PortfolioFragmentAdapter(ArrayList(stocks))
+            recyclerView.adapter = PortfolioFragmentAdapter(ArrayList(stocks), fragmentVM)
         })
 
         return binding.root

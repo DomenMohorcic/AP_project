@@ -22,7 +22,14 @@
 
     <string name="transaction_history">Transaction history</string>
 
+    <string name="investments_text">Investments</string>
+    <string name="investment_text">Investment</string>
+    <string name="stats_text">Stats</string>
+    <string name="about_text">About</string>
+    <string name="overview_text">Overview</string>
 
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="num_of_shares">Number of shares</string>
+    <string name="value">Value</string>
+    <string name="return_of_investment">Return</string>
+
 </resources>

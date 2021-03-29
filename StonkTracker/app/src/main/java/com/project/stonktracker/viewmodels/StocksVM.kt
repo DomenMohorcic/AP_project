@@ -65,7 +65,13 @@ class StocksVM : ViewModel() {
     }
 }
 
+//
+// REPOSITORY!
+//
+
 class StocksRepository(private val stonkDao: StonkDao) {
+
+    // Purchase History
 
     fun phGetHistory(): List<PurchaseHistory> {
         return stonkDao.phGetAllInstances()
