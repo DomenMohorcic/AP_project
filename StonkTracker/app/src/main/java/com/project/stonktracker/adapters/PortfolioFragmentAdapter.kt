@@ -22,8 +22,6 @@ class PortfolioFragmentAdapter(private val stockData: ArrayList<StockInfo>, priv
         val sharesPriceText: TextView = view.findViewById(R.id.totalSharesCurrentPrice)
         val valueText: TextView = view.findViewById(R.id.totalValue)
         val changeText: TextView = view.findViewById(R.id.sharesPL)
-
-
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -34,15 +32,13 @@ class PortfolioFragmentAdapter(private val stockData: ArrayList<StockInfo>, priv
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val si: StockInfo = stockData[position]
 
-        val price: Double = 450.0 // TODO API call
-
         Glide.with(holder.logoImage.context as Activity)
             .load("https://logo.clearbit.com/${si.webURL}")
             .into(holder.logoImage)
         holder.nameText.text = si.full_name
-        holder.sharesPriceText.text = "${si.shares} shares @ ${String.format("%.2f", price)}€"
+        holder.sharesPriceText.text = "${si.shares} shares @ ${String.format("%.2f", si.last_close)}€"
 
-        var value: Double = price * si.shares
+        var value: Double = si.last_close * si.shares
         holder.valueText.text = "${String.format("%.2f", value)}€"
 
         var change: Double = value - si.avg_price*si.shares
@@ -53,7 +49,7 @@ class PortfolioFragmentAdapter(private val stockData: ArrayList<StockInfo>, priv
             var activity: AppCompatActivity = view.context as AppCompatActivity
             // save choice to FragmentVM
             fragmentVM.setCompany(Company(si.ticker, si.full_name, si.sector))
-            fragmentVM.setInvestment(Investment(si.ticker, si.shares, price, change, change_percent))
+            fragmentVM.setInvestment(Investment(si.ticker, si.shares, si.last_close, change, change_percent))
             val fragmentTransaction = activity.supportFragmentManager.beginTransaction()
             fragmentTransaction.replace(R.id.fragment, StockFragment())
             fragmentTransaction.addToBackStack(null)

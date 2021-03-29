@@ -48,10 +48,9 @@ class StockFragment: Fragment() {
             binding.shares = inv.shares.toString()
         }
 
-
         var webURL = stocksVM.getTickersAndURLs().value!!
         Glide.with(binding.imageViewLogo.context as Activity)
-            .load("https://logo.clearbit.com/${webURL[cmpy.ticker]}")
+            .load("https://logo.clearbit.com/${webURL[cmpy.ticker]?.get(0)}")
             .into(binding.imageViewLogo)
 
         return binding.root
