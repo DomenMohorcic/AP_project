@@ -12,6 +12,7 @@ import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.project.stonktracker.databinding.HistoryFragmentBinding
+import com.project.stonktracker.viewmodels.StocksVM
 
 class HistoryFragment : Fragment() {
 
@@ -19,8 +20,10 @@ class HistoryFragment : Fragment() {
         fun newInstance() = HistoryFragment()
     }
 
-    private val historyVM: HistoryVM by activityViewModels()
-    private val portfolioVM: PortfolioVM by activityViewModels()
+    //private val historyVM: HistoryVM by activityViewModels()
+    //private val portfolioVM: PortfolioVM by activityViewModels()
+    private val stocksVM: StocksVM by activityViewModels()
+
     private lateinit var recyclerView: RecyclerView
 
     // binding
@@ -32,7 +35,7 @@ class HistoryFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        historyVM.init()
+        stocksVM.init()
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -44,7 +47,7 @@ class HistoryFragment : Fragment() {
         recyclerView.setHasFixedSize(true)
         recyclerView.layoutManager = GridLayoutManager(view?.context, 1)
 
-        historyVM.getHistory().observe(viewLifecycleOwner, {history ->
+        stocksVM.getHistory().observe(viewLifecycleOwner, {history ->
             hist = history
             // tickerURL = portfolioVM.getTickersAndURLs().value!!
             Log.i("fragment_observe", "historyVM in HistoryFragment")
@@ -53,7 +56,7 @@ class HistoryFragment : Fragment() {
             }
         })
 
-        portfolioVM.getTickersAndURLs().observe(viewLifecycleOwner, {tickerAndURL ->
+        stocksVM.getTickersAndURLs().observe(viewLifecycleOwner, {tickerAndURL ->
             tickerURL = tickerAndURL
             // hist = historyVM.getHistory().value!!
             Log.i("fragment_observe", "portfolioVM in HistoryFragment")

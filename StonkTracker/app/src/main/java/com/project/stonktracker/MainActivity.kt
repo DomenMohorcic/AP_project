@@ -13,6 +13,8 @@ import com.android.volley.toolbox.Volley
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.project.stonktracker.databinding.ActivityMainBinding
 import com.project.stonktracker.viewmodels.FragmentVM
+import com.project.stonktracker.viewmodels.StocksRepository
+import com.project.stonktracker.viewmodels.StocksVM
 
 var queue: RequestQueue? = null
 var KEY_VANTAGE: String = "RTUYSN1G309FMPH2"
@@ -24,14 +26,18 @@ class MainActivity : AppCompatActivity() {
     private lateinit var nav: BottomNavigationView
     private lateinit var selectedFragment: Fragment
 
-    private val portfolioVM: PortfolioVM by viewModels()
-    private val historyVM: HistoryVM by viewModels()
+    //private val portfolioVM: PortfolioVM by viewModels()
+    //private val historyVM: HistoryVM by viewModels()
     private val fragmentVM: FragmentVM by viewModels()
+
+    private val stocksVM: StocksVM by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        portfolioVM.repository = PortfolioRepository(StonkDatabase.getStonkDatabase(this)!!.stonkDao())
-        historyVM.repository = HistoryRepository(StonkDatabase.getStonkDatabase(this)!!.stonkDao())
+        //portfolioVM.repository = PortfolioRepository(StonkDatabase.getStonkDatabase(this)!!.stonkDao())
+        //historyVM.repository = HistoryRepository(StonkDatabase.getStonkDatabase(this)!!.stonkDao())
+
+        stocksVM.repository = StocksRepository(StonkDatabase.getStonkDatabase(this)!!.stonkDao())
 
         queue = Volley.newRequestQueue(this)
 
