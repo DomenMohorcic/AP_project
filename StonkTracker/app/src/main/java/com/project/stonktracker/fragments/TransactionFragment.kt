@@ -17,6 +17,7 @@ import com.google.android.material.internal.NavigationMenu
 import com.project.stonktracker.databinding.TransactionFragmentBinding
 import com.project.stonktracker.viewmodels.Company
 import com.project.stonktracker.viewmodels.FragmentVM
+import com.project.stonktracker.viewmodels.StocksVM
 import java.text.SimpleDateFormat
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
@@ -29,8 +30,10 @@ class TransactionFragment : Fragment() {
     }
 
     private val fragmentVM: FragmentVM by activityViewModels()
-    private val historyVM: HistoryVM by activityViewModels()
-    private val portfolioVM: PortfolioVM by activityViewModels()
+    //private val historyVM: HistoryVM by activityViewModels()
+    //private val portfolioVM: PortfolioVM by activityViewModels()
+
+    private val stocksVM: StocksVM by activityViewModels()
 
     private lateinit var company: Company
     private lateinit var dateText: String
@@ -101,7 +104,7 @@ class TransactionFragment : Fragment() {
 
             // add to database via MVVM
             Log.i("fragment_observe", "Saving transaction")
-            historyVM.insert(ph)
+            stocksVM.phInsert(ph)
             // portfolioVM.updateStocks()
 
             // After added transaction go to HISTORY
