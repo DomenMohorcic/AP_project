@@ -46,7 +46,7 @@ class SearchFragment : Fragment() {
                         val arr = response.getJSONArray("bestMatches")
                         for(i in 0 until arr.length()) {
                             var obj = arr.getJSONObject(i)
-                            searchResults.add(Company(obj.getString("1. symbol"), obj.getString("2. name")))
+                            searchResults.add(Company(obj.getString("1. symbol"), obj.getString("2. name"), "none"))
                         }
                         // RecyclerView for showing portfolio data
                         recyclerView = binding.recyclerViewSearch
