@@ -7,11 +7,14 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.View.INVISIBLE
 import android.view.ViewGroup
+import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.google.android.material.bottomnavigation.BottomNavigationView
-import com.project.stonktracker.R
+import com.project.stonktracker.*
 import com.project.stonktracker.databinding.StockFragmentBinding
 import com.project.stonktracker.viewmodels.FragmentVM
 import com.project.stonktracker.viewmodels.StocksVM
@@ -27,9 +30,12 @@ class StockFragment: Fragment() {
     // This property is only valid between onCreateView and onDestroyView.
     private val binding get() = _binding!!
 
+    private lateinit var recyclerView: RecyclerView
+    private lateinit var hist: List<PurchaseHistory>
+    private lateinit var tickerURL: HashMap<String, List<String>>
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        // stocksVM.init()
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -38,6 +44,8 @@ class StockFragment: Fragment() {
 
         val cmpy = fragmentVM.getCompany()
         val inv = fragmentVM.getInvestment()
+
+        stocksVM.fetchHistoryTicker(cmpy.ticker)
 
         binding.companyName = cmpy.name
         binding.companyTicker = cmpy.ticker
@@ -50,16 +58,50 @@ class StockFragment: Fragment() {
         binding.value = "$${String.format("%,.2f", inv.value * inv.shares)}"
         binding.roi = "$transToken$${String.format("%,.2f", roi)} ($transToken${String.format("%,.2f", roi_percent)}%)"
 
+        // TODO make this work...
         if (inv.shares % 10 == 0.0) {
             binding.shares = inv.shares.toInt().toString()
         } else {
             binding.shares = inv.shares.toString()
         }
 
+        // Load LOGO
         var webURL = stocksVM.getTickersAndURLs().value!!
         Glide.with(binding.imageViewLogo.context as Activity)
             .load("https://logo.clearbit.com/${webURL[cmpy.ticker]?.get(0)}")
             .into(binding.imageViewLogo)
+
+        // onClick New Transaction
+        binding.buttonNewTransaction.setOnClickListener {
+            // After added transaction go to HISTORY
+            var activity: AppCompatActivity = it.context as AppCompatActivity
+
+            val fragmentTransaction = activity.supportFragmentManager.beginTransaction()
+            fragmentTransaction.replace(R.id.fragment, TransactionFragment())
+            now_fragment = FTracker.TRANSACTION
+            // fragmentTransaction.addToBackStack(null)
+            fragmentTransaction.commit()
+        }
+
+        // Transaction History
+        // RecyclerView for showing portfolio data
+        recyclerView = binding.recyclerViewHistoryTicker
+        recyclerView.setHasFixedSize(true)
+        recyclerView.layoutManager = GridLayoutManager(view?.context, 1)
+
+        stocksVM.getHistoryTicker().observe(viewLifecycleOwner, {history ->
+            hist = history
+            if(this::tickerURL.isInitialized) {
+                recyclerView.adapter = HistoryFragmentAdapter(ArrayList(hist), tickerURL)
+            }
+        })
+
+        stocksVM.getTickersAndURLs().observe(viewLifecycleOwner, {tickerAndURL ->
+            tickerURL = tickerAndURL
+            if(this::hist.isInitialized) {
+                recyclerView.adapter = HistoryFragmentAdapter(ArrayList(hist), tickerURL)
+            }
+        })
 
         return binding.root
     }

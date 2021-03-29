@@ -20,6 +20,8 @@ class StocksVM : ViewModel() {
     private var tickers_web = MutableLiveData<HashMap<String, List<String>>>()
     private var history = MutableLiveData<List<PurchaseHistory>>()
 
+    private var historyTicker = MutableLiveData<List<PurchaseHistory>>()
+
     fun init() {
         viewModelScope.launch(Dispatchers.IO) {
             repository.getCloses()
@@ -37,6 +39,16 @@ class StocksVM : ViewModel() {
     }
     fun getTickersAndURLs(): MutableLiveData<HashMap<String, List<String>>> {
         return tickers_web
+    }
+
+    fun getHistoryTicker(): MutableLiveData<List<PurchaseHistory>> {
+        return historyTicker
+    }
+
+    fun fetchHistoryTicker(ticker: String) {
+        viewModelScope.launch(Dispatchers.IO) {
+            historyTicker.postValue(repository.phGetHistoryTicker(ticker))
+        }
     }
 
     fun updateCloses() {
@@ -128,6 +140,10 @@ class StocksRepository(private val stonkDao: StonkDao) {
 
     fun phGetHistory(): List<PurchaseHistory> {
         return stonkDao.phGetAllInstances()
+    }
+
+    fun phGetHistoryTicker(ticker: String): List<PurchaseHistory> {
+        return stonkDao.phGetTicker(ticker)
     }
 
     fun phGetCount(): Int {

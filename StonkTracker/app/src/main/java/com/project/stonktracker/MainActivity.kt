@@ -12,6 +12,7 @@ import com.android.volley.RequestQueue
 import com.android.volley.toolbox.Volley
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.project.stonktracker.databinding.ActivityMainBinding
+import com.project.stonktracker.fragments.StatsFragment
 import com.project.stonktracker.viewmodels.FragmentVM
 import com.project.stonktracker.viewmodels.StocksRepository
 import com.project.stonktracker.viewmodels.StocksVM
@@ -57,7 +58,7 @@ class MainActivity : AppCompatActivity() {
                     now_fragment = FTracker.SEARCH
                 }
                 R.id.nav_stats -> {
-                    selectedFragment = PortfolioFragment()// TransactionFragment()
+                    selectedFragment = StatsFragment()
                     now_fragment = FTracker.STATS
                 }
             }

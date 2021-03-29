@@ -26,16 +26,9 @@ class HistoryFragmentAdapter(private val historyInfo: ArrayList<PurchaseHistory>
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        // get element from data set at this position and replace the
-        // content of the view with that element
-
-        // TODO get info from ViewModel!
         val ph: PurchaseHistory = historyInfo[position]
 
         // TODO order before display! (can do it via DB call...)
-
-        // TODO get stock info from TICKER!
-        // val si: StockInfo = siGetTicker(ph.ticker)
 
         val transaction = if (ph.buy) "Buy" else "Sell"
         val transToken = if (ph.buy) "+" else "-"
