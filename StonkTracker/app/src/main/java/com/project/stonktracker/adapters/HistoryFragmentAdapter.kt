@@ -44,9 +44,9 @@ class HistoryFragmentAdapter(private val historyInfo: ArrayList<PurchaseHistory>
             .load("https://logo.clearbit.com/${webURL[ph.ticker]?.get(0)}")
             .into(holder.logo)
         holder.viewTicker.text = "$transaction ${ph.ticker}"
-        holder.viewShares.text = "${ph.quantity} shares @ ${String.format("%.2f", ph.price)}€"
+        holder.viewShares.text = "${ph.quantity} shares @ $${String.format("%,.2f", ph.price)}"
         holder.viewDate.text = ph.date
-        holder.total.text = "$transToken${String.format("%.2f", (ph.quantity * ph.price))}€"
+        holder.total.text = "$transToken$${String.format("%,.2f", (ph.quantity * ph.price))}"
     }
 
     override fun getItemCount() = historyInfo.size

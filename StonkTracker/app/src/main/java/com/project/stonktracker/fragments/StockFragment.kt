@@ -5,13 +5,17 @@ import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
+import android.view.View.INVISIBLE
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import com.bumptech.glide.Glide
+import com.google.android.material.bottomnavigation.BottomNavigationView
+import com.project.stonktracker.R
 import com.project.stonktracker.databinding.StockFragmentBinding
 import com.project.stonktracker.viewmodels.FragmentVM
 import com.project.stonktracker.viewmodels.StocksVM
+import kotlin.math.abs
 
 class StockFragment: Fragment() {
 
@@ -39,8 +43,12 @@ class StockFragment: Fragment() {
         binding.companyTicker = cmpy.ticker
         binding.companySector = cmpy.sector
 
-        binding.value = "${String.format("%.2f", inv.value)}€"
-        binding.roi = "${String.format("%.2f", inv.roi)}€ (${String.format("%.2f", inv.roipercent)}%)"
+        val transToken = if (inv.roi > 0) "+" else "-"
+        var roi = abs(inv.roi)
+        var roi_percent = abs(inv.roipercent)
+
+        binding.value = "$${String.format("%,.2f", inv.value * inv.shares)}"
+        binding.roi = "$transToken$${String.format("%,.2f", roi)} ($transToken${String.format("%,.2f", roi_percent)}%)"
 
         if (inv.shares % 10 == 0.0) {
             binding.shares = inv.shares.toInt().toString()

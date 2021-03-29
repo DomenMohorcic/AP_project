@@ -12,8 +12,8 @@
 
     <string name="text_shares">Shares</string>
     <string name="text_date">Date</string>
-    <string name="text_price_in">Price in €</string>
-    <string name="text_fees_in">Fees in €</string>
+    <string name="text_price_in">Price in $</string>
+    <string name="text_fees_in">Fees in $</string>
 
     <string name="hint_shares">0.0</string>
     <!-- <string name="hint_date">Date</string> -->
@@ -31,5 +31,7 @@
     <string name="num_of_shares">Number of shares</string>
     <string name="value">Value</string>
     <string name="return_of_investment">Return</string>
+
+    <string name="search">Search</string>
 
 </resources>

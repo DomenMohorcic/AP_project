@@ -40,43 +40,7 @@ class StocksVM : ViewModel() {
 
     fun updateCloses() {
         viewModelScope.launch(Dispatchers.IO) {
-            var date = Calendar.getInstance().time
-            val time = "${date.day}/${date.month+1}/${date.year+1900}"
-            var updateList = ""
-            var c = 0
-            for(si in stocks.value!!) {
-                if(!si.last_date.equals(time)) {
-                    if(c > 0) { updateList += "," }
-                    updateList += si.ticker
-                    c++
-                }
-            }
-            if(!updateList.equals("")) {
-                val url = "http://api.marketstack.com/v1/eod?access_key=$KEY_MARKETSTACK&symbols=$updateList&limit=$c"
-                queue?.add(JsonObjectRequest(Request.Method.GET, url, null,
-                    { response ->
-                        Log.i("request_api", "Got response")
-                        if(response.has("error")) {
-                            // API ERROR
-                        } else {
-                            val data = response.getJSONArray("data")
-                            val updatedSI = emptyList<StockInfo>()
-                            for(i in 0 until data.length()) {
-                                val obj = data.getJSONObject(i)
-                                val t = Thread {
-                                    var si = repository.siGetTicker(obj.getString("symbol"))
-                                    si.last_date = time
-                                    si.last_close = obj.getDouble("close")
-                                    repository.siUpdate(si)
-                                    c--
-                                }
-                                t.start()
-                            }
-                        }
-                    },
-                    { error -> Log.e("request_api", error.toString()) }))
-            }
-            while(c > 0) {}
+            repository.getCloses()
         }
     }
 
@@ -114,6 +78,48 @@ class StocksVM : ViewModel() {
 //
 
 class StocksRepository(private val stonkDao: StonkDao) {
+
+    // Closes
+
+    fun getCloses() {
+        var date = Calendar.getInstance().time
+        val time = "${date.day}/${date.month+1}/${date.year+1900}"
+        var updateList = ""
+        var c = 0
+        for(si in stonkDao.siGetStocksWithShares()) {
+            if(!si.last_date.equals(time)) {
+                if(c > 0) { updateList += "," }
+                updateList += si.ticker
+                c++
+            }
+        }
+        if(!updateList.equals("")) {
+            val url = "http://api.marketstack.com/v1/eod?access_key=$KEY_MARKETSTACK&symbols=$updateList&limit=$c"
+            queue?.add(JsonObjectRequest(Request.Method.GET, url, null,
+                { response ->
+                    Log.i("request_api", "Got response")
+                    if(response.has("error")) {
+                        // API ERROR
+                    } else {
+                        val data = response.getJSONArray("data")
+                        val updatedSI = emptyList<StockInfo>()
+                        for(i in 0 until data.length()) {
+                            val obj = data.getJSONObject(i)
+                            val t = Thread {
+                                var si = stonkDao.siGetTicker(obj.getString("symbol"))
+                                si.last_date = time
+                                si.last_close = obj.getDouble("close")
+                                stonkDao.siUpdate(si)
+                                c--
+                            }
+                            t.start()
+                        }
+                    }
+                },
+                { error -> Log.e("request_api", error.toString()) }))
+        }
+        while(c > 0) {}
+    }
 
     // Purchase History
 
@@ -171,6 +177,7 @@ class StocksRepository(private val stonkDao: StonkDao) {
                 { error -> Log.e("request_error", error.toString()) }))
         }
         while(!resultDone) {}
+        getCloses()
     }
 
     // STOCK INFO

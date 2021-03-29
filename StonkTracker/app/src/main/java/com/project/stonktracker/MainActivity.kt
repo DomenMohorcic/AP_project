@@ -28,21 +28,13 @@ class MainActivity : AppCompatActivity() {
     private lateinit var nav: BottomNavigationView
     private lateinit var selectedFragment: Fragment
 
-    //private val portfolioVM: PortfolioVM by viewModels()
-    //private val historyVM: HistoryVM by viewModels()
     private val fragmentVM: FragmentVM by viewModels()
-
     private val stocksVM: StocksVM by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        //portfolioVM.repository = PortfolioRepository(StonkDatabase.getStonkDatabase(this)!!.stonkDao())
-        //historyVM.repository = HistoryRepository(StonkDatabase.getStonkDatabase(this)!!.stonkDao())
-
         stocksVM.repository = StocksRepository(StonkDatabase.getStonkDatabase(this)!!.stonkDao())
-
         queue = Volley.newRequestQueue(this)
-
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
 
         nav = binding.bottomNavigationView
@@ -59,7 +51,8 @@ class MainActivity : AppCompatActivity() {
             val fragmentTransaction = supportFragmentManager.beginTransaction()
             fragmentTransaction.replace(R.id.fragment, selectedFragment)
             // don't put fragments on stack -- Coolio
-            // fragmentTransaction.addToBackStack(null)
+            //
+            //fragmentTransaction.addToBackStack(null)
             fragmentTransaction.commit()
 
             return@setOnNavigationItemSelectedListener true

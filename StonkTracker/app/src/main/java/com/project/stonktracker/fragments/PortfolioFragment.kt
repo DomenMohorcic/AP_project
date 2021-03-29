@@ -7,12 +7,16 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.View.VISIBLE
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.project.stonktracker.databinding.PortfolioFragmentBinding
 import com.project.stonktracker.viewmodels.FragmentVM
 import com.project.stonktracker.viewmodels.StocksVM
+import kotlin.math.abs
 
 class PortfolioFragment : Fragment() {
     companion object {
@@ -39,10 +43,6 @@ class PortfolioFragment : Fragment() {
         container?.removeAllViews() // else previous fragment is visible in background
         _binding = PortfolioFragmentBinding.inflate(inflater, container, false)
 
-        // TODO Calculate/Get from database
-        binding.portfolioValue = "1,865.65€"
-        binding.portfolioGains = "+250.15€ (+15.85%)"
-
         // RecyclerView for showing portfolio data
         recyclerView = binding.recyclerViewMain
         recyclerView.setHasFixedSize(true)
@@ -53,6 +53,33 @@ class PortfolioFragment : Fragment() {
             stocksVM.updateCloses()
             Log.i("fragment_observe", "portfolioVM in PortfolioFragment")
             recyclerView.adapter = PortfolioFragmentAdapter(ArrayList(stocks), fragmentVM)
+
+            var total_val = 0.0
+            var total_gains = 0.0
+            var total_paid = 0.0
+
+            for (stock in stocks) {
+                var current_val = stock.shares * stock.last_close
+                var current_paid = stock.shares * stock.avg_price
+                total_val += current_val
+                total_gains += current_val - current_paid
+                total_paid += current_paid
+            }
+
+            val transToken = if (total_gains > 0) "+" else "-"
+            var total_gains_temp = abs(total_gains)
+
+            binding.portfolioValue = "$${String.format("%,.2f", total_val)}"
+            binding.portfolioGains = "$transToken$${String.format("%,.2f", total_gains_temp)} ($transToken${String.format("%,.2f", total_gains_temp / total_paid * 100)}%)"
+
+            // get proper color for change percent value
+            var green = ContextCompat.getColor(requireContext(), R.color.buy_000)
+            var red = ContextCompat.getColor(requireContext(), R.color.sell_000)
+            if (total_gains >= 0.0) {
+                binding.textViewPL.setTextColor(green)
+            } else {
+                binding.textViewPL.setTextColor(red)
+            }
         })
 
         return binding.root

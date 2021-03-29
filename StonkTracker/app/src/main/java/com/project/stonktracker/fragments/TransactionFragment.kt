@@ -111,13 +111,13 @@ class TransactionFragment : Fragment() {
             var activity: AppCompatActivity = it.context as AppCompatActivity
 
             val fragmentTransaction = activity.supportFragmentManager.beginTransaction()
-            fragmentTransaction.replace(R.id.fragment, PortfolioFragment())
+            fragmentTransaction.replace(R.id.fragment, HistoryFragment())
             // fragmentTransaction.addToBackStack(null)
             fragmentTransaction.commit()
 
             // check the right navigation item...
             var nav = getActivity()?.findViewById<BottomNavigationView>(R.id.bottomNavigationView)
-            nav!!.menu.getItem(0).isChecked = true
+            nav!!.menu.getItem(3).isChecked = true
         }
 
         binding.buttonBuy.setOnClickListener {
