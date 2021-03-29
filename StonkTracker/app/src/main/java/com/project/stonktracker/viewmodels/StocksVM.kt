@@ -22,6 +22,7 @@ class StocksVM : ViewModel() {
 
     fun init() {
         viewModelScope.launch(Dispatchers.IO) {
+            repository.getCloses()
             stocks.postValue(repository.siGetPortfolio())
             tickers_web.postValue(repository.siGetTickersAndURLs())
             history.postValue(repository.phGetHistory())
@@ -41,6 +42,7 @@ class StocksVM : ViewModel() {
     fun updateCloses() {
         viewModelScope.launch(Dispatchers.IO) {
             repository.getCloses()
+            stocks.postValue(repository.siGetPortfolio())
         }
     }
 
@@ -64,6 +66,7 @@ class StocksVM : ViewModel() {
     fun phInsert(ph: PurchaseHistory) {
         viewModelScope.launch(Dispatchers.IO) {
             repository.phInsert(ph)
+            repository.getCloses()
             Log.i("fragment_observe", "Posting value...")
             history.postValue(repository.phGetHistory())
             stocks.postValue(repository.siGetPortfolio())
@@ -137,11 +140,11 @@ class StocksRepository(private val stonkDao: StonkDao) {
         if(stonkDao.siCheckTicker(ph.ticker) == 1) {
             val si = stonkDao.siGetTicker(ph.ticker)
             val prev_price = si.shares * si.avg_price
-            var new_price = when(ph.buy) {
+            val new_price = when(ph.buy) {
                 true -> prev_price + ph.quantity * ph.price
                 false -> prev_price - ph.quantity * ph.price
             }
-            var new_shares = when(ph.buy) {
+            val new_shares = when(ph.buy) {
                 true -> si.shares + ph.quantity
                 false -> si.shares - ph.quantity
             }
@@ -177,7 +180,6 @@ class StocksRepository(private val stonkDao: StonkDao) {
                 { error -> Log.e("request_error", error.toString()) }))
         }
         while(!resultDone) {}
-        getCloses()
     }
 
     // STOCK INFO

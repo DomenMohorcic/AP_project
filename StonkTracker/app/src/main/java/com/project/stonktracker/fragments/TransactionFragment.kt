@@ -13,7 +13,6 @@ import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import com.google.android.material.bottomnavigation.BottomNavigationView
-import com.google.android.material.internal.NavigationMenu
 import com.project.stonktracker.databinding.TransactionFragmentBinding
 import com.project.stonktracker.viewmodels.Company
 import com.project.stonktracker.viewmodels.FragmentVM
@@ -30,9 +29,6 @@ class TransactionFragment : Fragment() {
     }
 
     private val fragmentVM: FragmentVM by activityViewModels()
-    //private val historyVM: HistoryVM by activityViewModels()
-    //private val portfolioVM: PortfolioVM by activityViewModels()
-
     private val stocksVM: StocksVM by activityViewModels()
 
     private lateinit var company: Company
@@ -112,6 +108,7 @@ class TransactionFragment : Fragment() {
 
             val fragmentTransaction = activity.supportFragmentManager.beginTransaction()
             fragmentTransaction.replace(R.id.fragment, HistoryFragment())
+            now_fragment = FTracker.HISTORY
             // fragmentTransaction.addToBackStack(null)
             fragmentTransaction.commit()
 

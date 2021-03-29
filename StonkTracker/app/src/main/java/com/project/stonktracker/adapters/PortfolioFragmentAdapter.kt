@@ -75,6 +75,7 @@ class PortfolioFragmentAdapter(private val stockData: ArrayList<StockInfo>, priv
             // start fragment
             val fragmentTransaction = activity.supportFragmentManager.beginTransaction()
             fragmentTransaction.replace(R.id.fragment, StockFragment())
+            now_fragment = FTracker.STOCK
             // fragmentTransaction.addToBackStack(null)
             fragmentTransaction.commit()
         }

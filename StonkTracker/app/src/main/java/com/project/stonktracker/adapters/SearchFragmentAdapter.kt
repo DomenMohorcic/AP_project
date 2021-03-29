@@ -1,19 +1,14 @@
 package com.project.stonktracker
 
-import android.app.Activity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
-import android.widget.ImageView
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.RecyclerView
-import com.bumptech.glide.Glide
-import com.google.android.material.internal.ContextUtils.getActivity
 import com.project.stonktracker.viewmodels.Company
 import com.project.stonktracker.viewmodels.FragmentVM
-import org.w3c.dom.Text
 
 class SearchFragmentAdapter(private val searchResults: ArrayList<Company>, private val fragmentVM: FragmentVM) : RecyclerView.Adapter<SearchFragmentAdapter.ViewHolder>() {
 
@@ -39,6 +34,7 @@ class SearchFragmentAdapter(private val searchResults: ArrayList<Company>, priva
 
             val fragmentTransaction = activity.supportFragmentManager.beginTransaction()
             fragmentTransaction.replace(R.id.fragment, TransactionFragment())
+            now_fragment = FTracker.TRANSACTION
             // fragmentTransaction.addToBackStack(null)
             fragmentTransaction.commit()
         }

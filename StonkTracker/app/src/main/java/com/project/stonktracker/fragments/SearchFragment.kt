@@ -38,6 +38,10 @@ class SearchFragment : Fragment() {
         container?.removeAllViews() // else previous fragment is visible in background
         _binding = SearchFragmentBinding.inflate(inflater, container, false)
 
+        recyclerView = binding.recyclerViewSearch
+        recyclerView.setHasFixedSize(true)
+        recyclerView.layoutManager = GridLayoutManager(view?.context, 1)
+
         // makes API call - https://www.alphavantage.co/documentation/#symbolsearch
         binding.button.setOnClickListener {
             val q = binding.searchBox.text
@@ -51,9 +55,6 @@ class SearchFragment : Fragment() {
                             searchResults.add(Company(obj.getString("1. symbol"), obj.getString("2. name"), "none"))
                         }
                         // RecyclerView for showing portfolio data
-                        recyclerView = binding.recyclerViewSearch
-                        recyclerView.setHasFixedSize(true)
-                        recyclerView.layoutManager = GridLayoutManager(view?.context, 1)
                         recyclerView.adapter = SearchFragmentAdapter(searchResults, fragmentVM)
 
                         searchResults = ArrayList()
