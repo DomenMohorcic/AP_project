@@ -4,6 +4,7 @@ import android.content.Context
 import androidx.room.*
 import androidx.room.migration.Migration
 import androidx.sqlite.db.SupportSQLiteDatabase
+import java.util.*
 
 @Database(entities = [PurchaseHistory::class, StockInfo::class], version = 1, exportSchema = false)
 abstract class StonkDatabase: RoomDatabase() {
@@ -39,13 +40,17 @@ data class StockInfo (
     @ColumnInfo var full_name: String = "",
     @ColumnInfo var sector: String = "",
     @ColumnInfo var webURL: String = "",
+    @ColumnInfo var webURL_alt: String = "",
     @ColumnInfo var shares: Double = 0.0,
-    @ColumnInfo var avg_price: Double = 0.0
+    @ColumnInfo var avg_price: Double = 0.0,
+    @ColumnInfo var last_close: Double = 0.0,
+    @ColumnInfo var last_date: String = "01/01/1970"
 )
 
 data class InfoTickerUrl (
     @ColumnInfo val ticker: String = "",
-    @ColumnInfo val webURL: String = ""
+    @ColumnInfo val webURL: String = "",
+    @ColumnInfo val webURL_alt: String = ""
 )
 
 @Dao
@@ -95,7 +100,7 @@ interface StonkDao {
     @Query("SELECT * FROM stockInfo ORDER BY ticker ASC")
     fun siGetAllInstances(): List<StockInfo>
 
-    @Query("SELECT DISTINCT ticker, webURL FROM stockInfo")
+    @Query("SELECT DISTINCT ticker, webURL, webURL_alt FROM stockInfo")
     fun siGetTickersAndURLs(): List<InfoTickerUrl>
 
     @Query("SELECT COUNT(*) FROM stockInfo")

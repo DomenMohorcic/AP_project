@@ -9,13 +9,15 @@ import com.android.volley.toolbox.JsonObjectRequest
 import com.project.stonktracker.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import java.util.*
+import kotlin.collections.HashMap
 
 class StocksVM : ViewModel() {
     lateinit var repository: StocksRepository
 
     // Live data
     private var stocks = MutableLiveData<List<StockInfo>>()
-    private var tickers_web = MutableLiveData<HashMap<String, String>>()
+    private var tickers_web = MutableLiveData<HashMap<String, List<String>>>()
     private var history = MutableLiveData<List<PurchaseHistory>>()
 
     fun init() {
@@ -32,8 +34,50 @@ class StocksVM : ViewModel() {
     fun getStocks(): MutableLiveData<List<StockInfo>> {
         return stocks
     }
-    fun getTickersAndURLs(): MutableLiveData<HashMap<String, String>> {
+    fun getTickersAndURLs(): MutableLiveData<HashMap<String, List<String>>> {
         return tickers_web
+    }
+
+    fun updateCloses() {
+        viewModelScope.launch(Dispatchers.IO) {
+            var date = Calendar.getInstance().time
+            val time = "${date.day}/${date.month+1}/${date.year+1900}"
+            var updateList = ""
+            var c = 0
+            for(si in stocks.value!!) {
+                if(!si.last_date.equals(time)) {
+                    if(c > 0) { updateList += "," }
+                    updateList += si.ticker
+                    c++
+                }
+            }
+            if(!updateList.equals("")) {
+                val url = "http://api.marketstack.com/v1/eod?access_key=$KEY_MARKETSTACK&symbols=$updateList&limit=$c"
+                queue?.add(JsonObjectRequest(Request.Method.GET, url, null,
+                    { response ->
+                        Log.i("request_api", "Got response")
+                        if(response.has("error")) {
+                            // API ERROR
+                        } else {
+                            val data = response.getJSONArray("data")
+                            val updatedSI = emptyList<StockInfo>()
+                            for(i in 0 until data.length()) {
+                                val obj = data.getJSONObject(i)
+                                val t = Thread {
+                                    var si = repository.siGetTicker(obj.getString("symbol"))
+                                    si.last_date = time
+                                    si.last_close = obj.getDouble("close")
+                                    repository.siUpdate(si)
+                                    c--
+                                }
+                                t.start()
+                            }
+                        }
+                    },
+                    { error -> Log.e("request_api", error.toString()) }))
+            }
+            while(c > 0) {}
+        }
     }
 
     fun siInsert(si: StockInfo) {
@@ -106,7 +150,8 @@ class StocksRepository(private val stonkDao: StonkDao) {
                         val name: String = response.getString("name")
                         val sector: String = response.getString("sector")
                         val webURL: String = response.getString("url")
-                        val si = StockInfo(ph.ticker, name, sector, webURL, ph.quantity, ph.price)
+                        val webURLalt: String = response.getString("logo")
+                        val si = StockInfo(ph.ticker, name, sector, webURL, webURLalt, ph.quantity, ph.price)
                         Log.i("fragment_observe", "Setting thread...")
                         val t = Thread {
                             stonkDao.phInsert(ph)
@@ -128,13 +173,17 @@ class StocksRepository(private val stonkDao: StonkDao) {
         return stonkDao.siGetStocksWithShares()
     }
 
-    fun siGetTickersAndURLs(): HashMap<String, String> {
+    fun siGetTickersAndURLs(): HashMap<String, List<String>> {
         val tau = stonkDao.siGetTickersAndURLs()
-        var hm = HashMap<String, String>()
+        var hm = HashMap<String, List<String>>()
         tau.forEach { info ->
-            hm[info.ticker] = info.webURL
+            hm[info.ticker] = listOf(info.webURL, info.webURL_alt)
         }
         return hm
+    }
+
+    fun siGetTicker(ticker: String): StockInfo {
+        return stonkDao.siGetTicker(ticker)
     }
 
     fun siInsert(si: StockInfo) {

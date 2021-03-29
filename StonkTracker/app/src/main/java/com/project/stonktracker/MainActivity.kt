@@ -15,10 +15,12 @@ import com.project.stonktracker.databinding.ActivityMainBinding
 import com.project.stonktracker.viewmodels.FragmentVM
 import com.project.stonktracker.viewmodels.StocksRepository
 import com.project.stonktracker.viewmodels.StocksVM
+import java.util.*
 
 var queue: RequestQueue? = null
 var KEY_VANTAGE: String = "RTUYSN1G309FMPH2"
 var KEY_POLYGON: String = "Hd5NWeZJWpSOEQFfQdpj0yENXqlSkoYe"
+var KEY_MARKETSTACK: String = "e60e3314fa7e58010abacef621cfc246"
 
 class MainActivity : AppCompatActivity() {
 

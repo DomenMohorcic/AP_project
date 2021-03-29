@@ -48,6 +48,7 @@ class PortfolioFragment : Fragment() {
 
         // Observe the stock data in portfolioVM
         stocksVM.getStocks().observe(viewLifecycleOwner, {stocks ->
+            stocksVM.updateCloses()
             Log.i("fragment_observe", "portfolioVM in PortfolioFragment")
             recyclerView.adapter = PortfolioFragmentAdapter(ArrayList(stocks))
         })

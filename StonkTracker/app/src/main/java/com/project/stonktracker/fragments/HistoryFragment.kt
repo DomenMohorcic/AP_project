@@ -31,7 +31,7 @@ class HistoryFragment : Fragment() {
     private val binding get() = _binding!!
 
     private lateinit var hist: List<PurchaseHistory>
-    private lateinit var tickerURL: HashMap<String, String>
+    private lateinit var tickerURL: HashMap<String, List<String>>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
