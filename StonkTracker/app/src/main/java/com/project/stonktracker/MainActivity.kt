@@ -1,8 +1,10 @@
 package com.project.stonktracker
 
+import android.animation.ValueAnimator
 import android.os.Bundle
 import android.os.Handler
 import android.util.Log
+import android.view.View
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
@@ -99,7 +101,9 @@ class MainActivity : AppCompatActivity() {
             }
         }
     }
+
 }
+
 class FTracker {
     companion object {
         const val PORTFOLIO: Int = 0

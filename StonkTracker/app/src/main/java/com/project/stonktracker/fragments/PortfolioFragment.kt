@@ -1,5 +1,6 @@
 package com.project.stonktracker
 
+import android.animation.ValueAnimator
 import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle
 import android.util.Log
@@ -68,8 +69,18 @@ class PortfolioFragment : Fragment() {
             val transToken = if (total_gains > 0) "+" else "-"
             var total_gains_temp = abs(total_gains)
 
-            binding.portfolioValue = "$${String.format("%,.2f", total_val)}"
+            // binding.portfolioValue = "$${String.format("%,.2f", total_val)}"
             binding.portfolioGains = "$transToken$${String.format("%,.2f", total_gains_temp)} ($transToken${String.format("%,.2f", total_gains_temp / total_paid * 100)}%)"
+
+            // add animated portfolio value
+            // TODO dynamic changes... not only from 0
+            // TODO if animation is running and you click somewhere app crashes!! animator.end()??
+            var animator: ValueAnimator = ValueAnimator.ofFloat(0.0.toFloat(), total_val.toFloat())
+            animator.setDuration(1500)
+            animator.addUpdateListener {
+                binding.portfolioValue = "$${String.format("%,.2f", animator.getAnimatedValue())}"
+            }
+            animator.start()
 
             // get proper color for change percent value
             var green = ContextCompat.getColor(requireContext(), R.color.buy_000)
