@@ -13,8 +13,13 @@
         <!-- Status bar color. -->
         <item name="android:statusBarColor" tools:targetApi="l">?attr/colorPrimaryVariant</item>
         <!-- Customize your theme here. -->
-        <item name="hintTextColor"> @color/neutral_000</item>
+        <item name="hintTextColor">@color/neutral_000</item>
         <item name="android:textColor">@color/black</item>
 
+    </style>
+
+    <style name="ThemeOverlay.StonkTracker.AppWidgetContainer" parent="">
+        <item name="appWidgetBackgroundColor">@color/light_blue_600</item>
+        <item name="appWidgetTextColor">@color/light_blue_50</item>
     </style>
 </resources>

@@ -1,6 +1,10 @@
 package com.project.stonktracker
 
 import android.animation.ValueAnimator
+import android.content.BroadcastReceiver
+import android.content.Context
+import android.content.Intent
+import android.content.IntentFilter
 import android.os.Bundle
 import android.os.Handler
 import android.util.Log
@@ -10,6 +14,7 @@ import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
+import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import com.android.volley.RequestQueue
 import com.android.volley.toolbox.Volley
 import com.google.android.material.bottomnavigation.BottomNavigationView
@@ -77,6 +82,29 @@ class MainActivity : AppCompatActivity() {
             return@setOnNavigationItemSelectedListener true
         }
 
+        // TODO SERVICE START
+        val intent = Intent(this, StonkService::class.java)
+        startService(intent)
+
+        LocalBroadcastManager.getInstance(this).registerReceiver(receiver, IntentFilter(
+            StonkService.NOTIFICATION
+        ))
+
+    }
+
+    // TODO
+    private val receiver = object : BroadcastReceiver() {
+        override fun onReceive(context: Context?, intent: Intent?) {
+            val bundle = intent?.extras
+            if (bundle != null) {
+                val joke = bundle.getString(StonkService.JOKE_TEXT)
+                val counter = bundle.getInt(StonkService.JOKE_COUNTER)
+
+                // TODO save to MVVM!
+                // .setText(joke)
+                // jokeCounter.setText("Joke counter: $counter")
+            }
+        }
     }
 
     /* Double back press for exit */
