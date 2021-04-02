@@ -1,6 +1,8 @@
 package com.project.stonktracker.viewmodels
 
+import android.os.Build
 import android.util.Log
+import androidx.annotation.RequiresApi
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -9,6 +11,8 @@ import com.android.volley.toolbox.JsonObjectRequest
 import com.project.stonktracker.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
 import java.util.*
 import kotlin.collections.HashMap
 
@@ -97,8 +101,7 @@ class StocksRepository(private val stonkDao: StonkDao) {
     // Closes
 
     fun getCloses() {
-        var date = Calendar.getInstance().time
-        val time = "${date.day}/${date.month+1}/${date.year+1900}"
+        val time = LocalDateTime.now().format(DateTimeFormatter.BASIC_ISO_DATE)
         var updateList = ""
         var c = 0
         for(si in stonkDao.siGetStocksWithShares()) {
@@ -124,6 +127,7 @@ class StocksRepository(private val stonkDao: StonkDao) {
                                 var si = stonkDao.siGetTicker(obj.getString("symbol"))
                                 si.last_date = time
                                 si.last_close = obj.getDouble("close")
+                                si.last_volume = obj.getInt("volume")
                                 stonkDao.siUpdate(si)
                                 c--
                             }

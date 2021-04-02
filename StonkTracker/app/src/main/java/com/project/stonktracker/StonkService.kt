@@ -20,31 +20,25 @@ class StonkService : Service() {
     @Volatile
     private var running = true
     private lateinit var thread: Thread
-
-    private var count: Int = 0
-    private var portfolioValue: String = ""
-    private lateinit var stocks: ArrayList<String>
+    private lateinit var _stocks: ArrayList<String>
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
-        stocks = intent?.getStringArrayListExtra("TICKERS") as ArrayList<String>
-        Log.i("service_info", "started SERVICE with $stocks")
+        _stocks = intent?.getStringArrayListExtra("TICKERS") as ArrayList<String>
+        Log.i("service_info", "started SERVICE with $_stocks")
+        thread.start()
         return START_STICKY
     }
 
     override fun onCreate() {
         super.onCreate()
-
         thread = Thread {
-            while (running) {
-                portfolioValue = getRealtimeStockPrices()
-                count += 1
-                Log.i("jokes_notification", portfolioValue)
-                publishResults(portfolioValue, count)
-                Thread.sleep(5000)
+            while(running) {
+                Log.i("service", "Thread executed")
+                val portfolioValue = getRealtimeStockPrices(_stocks)
+                publishResults(portfolioValue)
+                Thread.sleep(60000) // every minute
             }
         }
-
-        thread.start()
     }
 
     override fun onDestroy() {
@@ -62,43 +56,40 @@ class StonkService : Service() {
         return null
     }
 
-    private fun getRealtimeStockPrices(): String {
-        val url = "https://realstonks.p.rapidapi.com/TSLA"
-        queue?.add(object: StringRequest(Request.Method.GET, url,
-            { response ->
-                Log.i("request", response.toString())
-                val str = response.replace("\\", "")
-                val obj = JSONObject(str.substring(1, str.length-1))
-                Log.i("request", obj.toString())
-            }, { error -> Log.e("request_error", error.toString()) }) {
-            override fun getHeaders(): MutableMap<String, String> {
-                return KEY_HEADER
-            }
-        })
+    fun updateStocks(s: ArrayList<String>) {
+        _stocks = s
+    }
 
-        return "0"
-        /*val json = JSONObject(URL("https://api.icndb.com/jokes/random").readText())
-
-        val type = json.getString("type")
-        val joke = JSONObject(json.getString("value")).getString("joke")
-        val id = JSONObject(json.getString("value")).getString("id")
-
-        Log.i("service_info", joke)
-
-        return joke*/
+    private fun getRealtimeStockPrices(stocks: ArrayList<String>): HashMap<String, Double> {
+        Log.i("service", "getRealtimeStockPrices")
+        val hm = HashMap<String, Double>()
+        for(stock in stocks) {
+            val url = "https://realstonks.p.rapidapi.com/$stock"
+            queue?.add(object: StringRequest(Request.Method.GET, url,
+                { response ->
+                    val str = response.replace("\\", "")
+                    val obj = JSONObject(str.substring(1, str.length-1))
+                    Log.i("service", "Got $stock")
+                    hm[stock] = obj.getDouble("price")
+                }, { error -> Log.e("request_error", error.toString()) }) {
+                override fun getHeaders(): MutableMap<String, String> {
+                    return KEY_HEADER
+                }
+            })
+        }
+        while(hm.size < stocks.size) {}
+        return hm
     }
 
     companion object {
-        const val NOTIFICATION = "com.example.exercise10startservice.receiver"
-        const val JOKE_TEXT = "JOKE_TEXT_KEY"
-        const val JOKE_COUNTER = "JOKE_COUNTER_KEY"
+        const val NOTIFICATION = "com.project.stonktracker.receiver"
+        const val STOCK_DATA = "STOCK_DATA_KEY"
     }
 
-    private fun publishResults(jokeText: String, jokeCouter: Int) {
+    private fun publishResults(portfolioValue: HashMap<String, Double>) {
+        Log.i("service", "Publishing")
         val intent = Intent(NOTIFICATION)
-        intent.putExtra(JOKE_COUNTER, jokeCouter)
-        intent.putExtra(JOKE_TEXT, jokeText)
+        intent.putExtra(STOCK_DATA, portfolioValue)
         LocalBroadcastManager.getInstance(this).sendBroadcast(intent)
     }
-
 }
