@@ -44,7 +44,11 @@ data class StockInfo (
     @ColumnInfo var shares: Double = 0.0,
     @ColumnInfo var avg_price: Double = 0.0,
     @ColumnInfo var last_close: Double = 0.0,
-    @ColumnInfo var last_date: String = "01/01/1970"
+    @ColumnInfo var last_volume: Int = 0,
+    @ColumnInfo var last_date: String = "01/01/1970",
+    @ColumnInfo var PE: Double = 0.0,
+    @ColumnInfo var EPS: Double = 0.0,
+    @ColumnInfo var market_cap: Double = 0.0
 )
 
 data class InfoTickerUrl (
