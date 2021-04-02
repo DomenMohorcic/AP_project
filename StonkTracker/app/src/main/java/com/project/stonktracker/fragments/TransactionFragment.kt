@@ -1,5 +1,6 @@
 package com.project.stonktracker
 
+import android.annotation.SuppressLint
 import android.app.DatePickerDialog
 import android.os.Build
 import android.os.Bundle
@@ -33,6 +34,9 @@ class TransactionFragment : Fragment() {
 
     private lateinit var company: Company
     private lateinit var dateText: String
+    private var g_day = 1
+    private var g_month = 1
+    private var g_year = 1970
     private var buyStatus: Boolean = true
 
     // binding
@@ -65,26 +69,37 @@ class TransactionFragment : Fragment() {
         super.onActivityCreated(savedInstanceState)
 
         binding.editDate.setOnClickListener {
-            val cldr: Calendar = Calendar.getInstance()
-            val day: Int = cldr.get(Calendar.DAY_OF_MONTH)
-            val month: Int = cldr.get(Calendar.MONTH)
-            val year: Int = cldr.get(Calendar.YEAR)
+            val c_day: Int
+            val c_month: Int
+            val c_year: Int
+            if(g_year == 1970) {
+                val cldr: Calendar = Calendar.getInstance()
+                c_day = cldr.get(Calendar.DAY_OF_MONTH)
+                c_month = cldr.get(Calendar.MONTH)
+                c_year = cldr.get(Calendar.YEAR)
+            } else {
+                c_day = g_day
+                c_month = g_month-1
+                c_year = g_year
+            }
             // date picker dialog
-            // date picker dialog
-            var picker = DatePickerDialog(requireContext(),
+            val picker = DatePickerDialog(requireContext(),
                 { view, year, monthOfYear, dayOfMonth ->
                     dateText = year.toString()+"/"+(monthOfYear + 1)+"/"+dayOfMonth.toString()
-                    // Log.i("datepicker_info", "$dateText")
+                    Log.i("datepicker_info", dateText)
                     val formatter = SimpleDateFormat("yyyy/MM/dd")
                     val date = formatter.parse(dateText)
-                    dateText = LocalDateTime.of(year, month, dayOfMonth, 0, 0).format(DateTimeFormatter.BASIC_ISO_DATE)
-                    // Log.i("datepicker_info", "${dateText}")
+                    dateText = LocalDateTime.of(year, monthOfYear+1, dayOfMonth, 0, 0).format(DateTimeFormatter.BASIC_ISO_DATE)
+                    Log.i("datepicker_info", dateText)
+                    g_day = dayOfMonth
+                    g_month = monthOfYear+1
+                    g_year = year
                     // Log.i("date_info", SimpleDateFormat("dd MMM yyyy").format(date))
                     binding.editDate.setText(SimpleDateFormat("dd MMM yyyy").format(date))
                 },
-                year,
-                month,
-                day)
+                c_year,
+                c_month,
+                c_day)
             picker.show()
         }
 
@@ -112,6 +127,7 @@ class TransactionFragment : Fragment() {
 
             val fragmentTransaction = activity.supportFragmentManager.beginTransaction()
             fragmentTransaction.replace(R.id.fragment, HistoryFragment())
+            prev_fragment = now_fragment
             now_fragment = FTracker.HISTORY
             // fragmentTransaction.addToBackStack(null)
             fragmentTransaction.commit()

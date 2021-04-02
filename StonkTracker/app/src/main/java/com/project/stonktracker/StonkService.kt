@@ -5,6 +5,10 @@ import android.content.Intent
 import android.os.IBinder
 import android.util.Log
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
+import com.android.volley.Request
+import com.android.volley.toolbox.JsonObjectRequest
+import com.android.volley.toolbox.StringRequest
+import com.project.stonktracker.viewmodels.StocksVM
 import org.json.JSONObject
 import java.lang.Exception
 import java.net.URL
@@ -59,7 +63,21 @@ class StonkService : Service() {
     }
 
     private fun getRealtimeStockPrices(): String {
-        val json = JSONObject(URL("https://api.icndb.com/jokes/random").readText())
+        val url = "https://realstonks.p.rapidapi.com/TSLA"
+        queue?.add(object: StringRequest(Request.Method.GET, url,
+            { response ->
+                Log.i("request", response.toString())
+                val str = response.replace("\\", "")
+                val obj = JSONObject(str.substring(1, str.length-1))
+                Log.i("request", obj.toString())
+            }, { error -> Log.e("request_error", error.toString()) }) {
+            override fun getHeaders(): MutableMap<String, String> {
+                return KEY_HEADER
+            }
+        })
+
+        return "0"
+        /*val json = JSONObject(URL("https://api.icndb.com/jokes/random").readText())
 
         val type = json.getString("type")
         val joke = JSONObject(json.getString("value")).getString("joke")
@@ -67,7 +85,7 @@ class StonkService : Service() {
 
         Log.i("service_info", joke)
 
-        return joke
+        return joke*/
     }
 
     companion object {
