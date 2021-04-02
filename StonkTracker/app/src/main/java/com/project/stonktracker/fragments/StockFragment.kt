@@ -78,6 +78,7 @@ class StockFragment: Fragment() {
 
             val fragmentTransaction = activity.supportFragmentManager.beginTransaction()
             fragmentTransaction.replace(R.id.fragment, TransactionFragment())
+            prev_fragment = now_fragment
             now_fragment = FTracker.TRANSACTION
             // fragmentTransaction.addToBackStack(null)
             fragmentTransaction.commit()

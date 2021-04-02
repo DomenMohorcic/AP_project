@@ -66,9 +66,10 @@ class PortfolioFragment : Fragment() {
                 total_paid += current_paid
             }
 
-            val transToken = if (total_gains > 0) "+" else "-"
+            val transToken = if (total_gains >= 0) "+" else "-"
             var total_gains_temp = abs(total_gains)
 
+            // TODO if no stocks -> change is NaN%
             // binding.portfolioValue = "$${String.format("%,.2f", total_val)}"
             binding?.portfolioGains = "$transToken$${String.format("%,.2f", total_gains_temp)} ($transToken${String.format("%,.2f", total_gains_temp / total_paid * 100)}%)"
 
