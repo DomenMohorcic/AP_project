@@ -19,8 +19,11 @@ class StonkService : Service() {
 
     private var count: Int = 0
     private var portfolioValue: String = ""
+    private lateinit var stocks: ArrayList<String>
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
+        stocks = intent?.getStringArrayListExtra("TICKERS") as ArrayList<String>
+        Log.i("service_info", "started SERVICE with $stocks")
         return START_STICKY
     }
 
@@ -29,7 +32,7 @@ class StonkService : Service() {
 
         thread = Thread {
             while (running) {
-                portfolioValue = getJokeFromInternet()
+                portfolioValue = getRealtimeStockPrices()
                 count += 1
                 Log.i("jokes_notification", portfolioValue)
                 publishResults(portfolioValue, count)
@@ -55,14 +58,14 @@ class StonkService : Service() {
         return null
     }
 
-    private fun getJokeFromInternet(): String {
+    private fun getRealtimeStockPrices(): String {
         val json = JSONObject(URL("https://api.icndb.com/jokes/random").readText())
 
         val type = json.getString("type")
         val joke = JSONObject(json.getString("value")).getString("joke")
         val id = JSONObject(json.getString("value")).getString("id")
 
-        Log.i("API_Request", joke)
+        Log.i("service_info", joke)
 
         return joke
     }

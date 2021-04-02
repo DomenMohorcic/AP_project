@@ -24,6 +24,7 @@ import com.project.stonktracker.viewmodels.FragmentVM
 import com.project.stonktracker.viewmodels.StocksRepository
 import com.project.stonktracker.viewmodels.StocksVM
 import java.util.*
+import kotlin.collections.ArrayList
 
 var queue: RequestQueue? = null
 
@@ -82,13 +83,20 @@ class MainActivity : AppCompatActivity() {
             return@setOnNavigationItemSelectedListener true
         }
 
-        // TODO SERVICE START
-        val intent = Intent(this, StonkService::class.java)
+        // TODO SERVICE START - from fragment?
+        /*val intent = Intent(this, StonkService::class.java)
+        var stocks = stocksVM.getStocks().value
+        var len_of_portfolio = stocks?.size
+        var array = ArrayList<String>()
+        for (i in 0..len_of_portfolio!!) {
+            stocks?.get(i)?.let { array.add(it.ticker) }
+        }
+        intent.putExtra("TICKERS", array)
         startService(intent)
 
         LocalBroadcastManager.getInstance(this).registerReceiver(receiver, IntentFilter(
             StonkService.NOTIFICATION
-        ))
+        ))*/
 
     }
 
