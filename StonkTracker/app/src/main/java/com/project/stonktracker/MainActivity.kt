@@ -3,6 +3,7 @@ package com.project.stonktracker
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
+import android.content.IntentFilter
 import android.os.Bundle
 import android.os.Handler
 import android.util.Log
@@ -11,6 +12,7 @@ import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
+import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import com.android.volley.Request
 import com.android.volley.RequestQueue
 import com.android.volley.toolbox.JsonObjectRequest
@@ -49,6 +51,8 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         stocksVM.repository = StocksRepository(StonkDatabase.getStonkDatabase(this)!!.stonkDao())
+        stocksVM.init()
+
         queue = Volley.newRequestQueue(this)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
 
@@ -84,33 +88,39 @@ class MainActivity : AppCompatActivity() {
 
             val fragmentTransaction = supportFragmentManager.beginTransaction()
             fragmentTransaction.replace(R.id.fragment, selectedFragment)
-            // don't put fragments on stack -- Coolio
-            //
-            //fragmentTransaction.addToBackStack(null)
             fragmentTransaction.commit()
 
             return@setOnNavigationItemSelectedListener true
         }
 
         // TODO SERVICE START - from fragment?
-        /*val intent = Intent(this, StonkService::class.java)
-        var stocks = stocksVM.getStocks().value
-        var len_of_portfolio = stocks?.size
-        var array = ArrayList<String>()
-        for (i in 0 until len_of_portfolio!!) {
+        //val intent = Intent(this, StonkService::class.java)
+        /*val stocks = stocksVM.getStocks().value
+        val len_of_portfolio = stocks?.size
+        val array = ArrayList<String>()
+        for(i in 0 until len_of_portfolio!!) {
             stocks?.get(i)?.let { array.add(it.ticker) }
-        }
+        }*/
+        /*val array = arrayListOf("TSLA", "MSFT", "AAPL")
         intent.putExtra("TICKERS", array)
-        startService(intent)
+        startService(intent)*/
 
-        LocalBroadcastManager.getInstance(this).registerReceiver(receiver, IntentFilter(
+        /*stocksVM.getStocks().observe(this, {stocks ->
+
+        })*/
+
+        /*LocalBroadcastManager.getInstance(this).registerReceiver(receiver, IntentFilter(
             StonkService.NOTIFICATION
         ))*/
+    }
 
+    override fun onDestroy() {
+        //stopService(intent)
+        super.onDestroy()
     }
 
     // TODO
-    private val receiver = object : BroadcastReceiver() {
+    /*private val receiver = object : BroadcastReceiver() {
         override fun onReceive(context: Context?, intent: Intent?) {
             val bundle = intent?.extras
             if (bundle != null) {
@@ -122,7 +132,7 @@ class MainActivity : AppCompatActivity() {
                 // jokeCounter.setText("Joke counter: $counter")
             }
         }
-    }
+    }*/
 
     /* Double back press for exit */
     private var doublePressed: Boolean = false

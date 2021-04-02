@@ -67,7 +67,7 @@ class PortfolioFragment : Fragment() {
             }
 
             val transToken = if (total_gains >= 0) "+" else "-"
-            var total_gains_temp = abs(total_gains)
+            val total_gains_temp = abs(total_gains)
 
             // TODO if no stocks -> change is NaN%
             // binding.portfolioValue = "$${String.format("%,.2f", total_val)}"
@@ -76,7 +76,7 @@ class PortfolioFragment : Fragment() {
             // add animated portfolio value
             // TODO dynamic changes... not only from 0
             // TODO if animation is running and you click somewhere app crashes!! animator.end()??
-            var animator: ValueAnimator = ValueAnimator.ofFloat(0.0.toFloat(), total_val.toFloat())
+            val animator: ValueAnimator = ValueAnimator.ofFloat(0.0.toFloat(), total_val.toFloat())
             animator.setDuration(500)
             animator.addUpdateListener {
                 binding?.portfolioValue = "$${String.format("%,.2f", animator.getAnimatedValue())}"
@@ -84,8 +84,8 @@ class PortfolioFragment : Fragment() {
             animator.start()
 
             // get proper color for change percent value
-            var green = ContextCompat.getColor(requireContext(), R.color.buy_000)
-            var red = ContextCompat.getColor(requireContext(), R.color.sell_000)
+            val green = ContextCompat.getColor(requireContext(), R.color.buy_000)
+            val red = ContextCompat.getColor(requireContext(), R.color.sell_000)
             if (total_gains >= 0.0) {
                 binding?.textViewPL?.setTextColor(green)
             } else {
