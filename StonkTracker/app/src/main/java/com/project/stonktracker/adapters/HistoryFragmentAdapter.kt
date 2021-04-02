@@ -8,6 +8,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import java.text.SimpleDateFormat
 
 class HistoryFragmentAdapter(private val historyInfo: ArrayList<PurchaseHistory>, private val webURL: HashMap<String, List<String>>) :
     RecyclerView.Adapter<HistoryFragmentAdapter.ViewHolder>() {
@@ -38,10 +39,12 @@ class HistoryFragmentAdapter(private val historyInfo: ArrayList<PurchaseHistory>
             .into(holder.logo)
         holder.viewTicker.text = "$transaction ${ph.ticker}"
         holder.viewShares.text = "${ph.quantity} shares @ $${String.format("%,.2f", ph.price)}"
+        /*val formatter = SimpleDateFormat("yyyy/MM/dd")
+        val date = formatter.parse(ph.date)
+        SimpleDateFormat("dd MMM yyyy").format(date)*/
         holder.viewDate.text = ph.date
         holder.total.text = "$transToken$${String.format("%,.2f", (ph.quantity * ph.price))}"
     }
 
     override fun getItemCount() = historyInfo.size
-
 }

@@ -33,7 +33,7 @@ class PortfolioFragment : Fragment() {
     // binding
     private var _binding: PortfolioFragmentBinding? = null
     // This property is only valid between onCreateView and onDestroyView.
-    private val binding get() = _binding!!
+    private val binding get() = _binding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -45,7 +45,7 @@ class PortfolioFragment : Fragment() {
         _binding = PortfolioFragmentBinding.inflate(inflater, container, false)
 
         // RecyclerView for showing portfolio data
-        recyclerView = binding.recyclerViewMain
+        recyclerView = binding?.recyclerViewMain!!
         recyclerView.setHasFixedSize(true)
         recyclerView.layoutManager = GridLayoutManager(view?.context, 1)
 
@@ -70,15 +70,15 @@ class PortfolioFragment : Fragment() {
             var total_gains_temp = abs(total_gains)
 
             // binding.portfolioValue = "$${String.format("%,.2f", total_val)}"
-            binding.portfolioGains = "$transToken$${String.format("%,.2f", total_gains_temp)} ($transToken${String.format("%,.2f", total_gains_temp / total_paid * 100)}%)"
+            binding?.portfolioGains = "$transToken$${String.format("%,.2f", total_gains_temp)} ($transToken${String.format("%,.2f", total_gains_temp / total_paid * 100)}%)"
 
             // add animated portfolio value
             // TODO dynamic changes... not only from 0
             // TODO if animation is running and you click somewhere app crashes!! animator.end()??
             var animator: ValueAnimator = ValueAnimator.ofFloat(0.0.toFloat(), total_val.toFloat())
-            animator.setDuration(1500)
+            animator.setDuration(500)
             animator.addUpdateListener {
-                binding.portfolioValue = "$${String.format("%,.2f", animator.getAnimatedValue())}"
+                binding?.portfolioValue = "$${String.format("%,.2f", animator.getAnimatedValue())}"
             }
             animator.start()
 
@@ -86,13 +86,13 @@ class PortfolioFragment : Fragment() {
             var green = ContextCompat.getColor(requireContext(), R.color.buy_000)
             var red = ContextCompat.getColor(requireContext(), R.color.sell_000)
             if (total_gains >= 0.0) {
-                binding.textViewPL.setTextColor(green)
+                binding?.textViewPL?.setTextColor(green)
             } else {
-                binding.textViewPL.setTextColor(red)
+                binding?.textViewPL?.setTextColor(red)
             }
         })
 
-        return binding.root
+        return binding?.root
     }
 
     override fun onDestroyView() {

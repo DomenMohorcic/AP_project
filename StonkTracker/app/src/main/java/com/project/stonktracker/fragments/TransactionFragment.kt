@@ -71,8 +71,8 @@ class TransactionFragment : Fragment() {
             // date picker dialog
             var picker = DatePickerDialog(requireContext(),
                 { view, year, monthOfYear, dayOfMonth ->
-                    var dateText = dayOfMonth.toString() + "/" + (monthOfYear + 1) + "/" + year
-                    val formatter = SimpleDateFormat("dd/MM/yyyy")
+                    dateText = year.toString()+"/"+(monthOfYear + 1)+"/"+dayOfMonth.toString()
+                    val formatter = SimpleDateFormat("yyyy/MM/dd")
                     val date = formatter.parse(dateText)
                     // Log.i("date_info", SimpleDateFormat("dd MMM yyyy").format(date))
                     binding.editDate.setText(SimpleDateFormat("dd MMM yyyy").format(date))
@@ -88,10 +88,9 @@ class TransactionFragment : Fragment() {
             var price = if (binding.editPrice.text.toString() != "") binding.editPrice.text.toString().toDouble() else 0.0
             var fees = if (binding.editFees.text.toString() != "") binding.editFees.text.toString().toDouble() else 0.0
 
-
             var ph: PurchaseHistory = PurchaseHistory(0,
                 company.ticker,
-                binding.editDate.text.toString(),
+                dateText,
                 shares,
                 price,
                 fees,

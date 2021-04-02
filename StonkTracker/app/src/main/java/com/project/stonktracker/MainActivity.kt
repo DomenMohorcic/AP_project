@@ -88,7 +88,7 @@ class MainActivity : AppCompatActivity() {
         var stocks = stocksVM.getStocks().value
         var len_of_portfolio = stocks?.size
         var array = ArrayList<String>()
-        for (i in 0..len_of_portfolio!!) {
+        for (i in 0 until len_of_portfolio!!) {
             stocks?.get(i)?.let { array.add(it.ticker) }
         }
         intent.putExtra("TICKERS", array)
