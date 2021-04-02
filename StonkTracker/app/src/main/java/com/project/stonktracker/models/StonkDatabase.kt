@@ -64,7 +64,7 @@ interface StonkDao {
     @Query("SELECT * FROM purchaseHistory WHERE ticker LIKE :ticker")
     fun phGetTicker(ticker: String): List<PurchaseHistory>
 
-    @Query("SELECT * FROM purchaseHistory")
+    @Query("SELECT * FROM purchaseHistory ORDER BY date DESC, ticker ASC")
     fun phGetAllInstances(): List<PurchaseHistory>
 
     @Query("SELECT COUNT(*) FROM purchaseHistory")

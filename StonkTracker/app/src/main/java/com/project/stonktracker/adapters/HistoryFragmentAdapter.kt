@@ -39,10 +39,9 @@ class HistoryFragmentAdapter(private val historyInfo: ArrayList<PurchaseHistory>
             .into(holder.logo)
         holder.viewTicker.text = "$transaction ${ph.ticker}"
         holder.viewShares.text = "${ph.quantity} shares @ $${String.format("%,.2f", ph.price)}"
-        /*val formatter = SimpleDateFormat("yyyy/MM/dd")
+        val formatter = SimpleDateFormat("yyyyMMdd")
         val date = formatter.parse(ph.date)
-        SimpleDateFormat("dd MMM yyyy").format(date)*/
-        holder.viewDate.text = ph.date
+        holder.viewDate.text = SimpleDateFormat("dd MMM yyyy").format(date)
         holder.total.text = "$transToken$${String.format("%,.2f", (ph.quantity * ph.price))}"
     }
 

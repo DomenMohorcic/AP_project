@@ -54,11 +54,13 @@ class TransactionFragment : Fragment() {
 
         // set defualt dateText that will be today's day..
         val currentDateTime = LocalDateTime.now()
+        dateText = currentDateTime.format(DateTimeFormatter.BASIC_ISO_DATE)
         binding.editDate.setText(currentDateTime.format(DateTimeFormatter.ofLocalizedDate(FormatStyle.MEDIUM)))
 
         return binding.root
     }
 
+    @RequiresApi(Build.VERSION_CODES.O)
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
 
@@ -72,8 +74,11 @@ class TransactionFragment : Fragment() {
             var picker = DatePickerDialog(requireContext(),
                 { view, year, monthOfYear, dayOfMonth ->
                     dateText = year.toString()+"/"+(monthOfYear + 1)+"/"+dayOfMonth.toString()
+                    // Log.i("datepicker_info", "$dateText")
                     val formatter = SimpleDateFormat("yyyy/MM/dd")
                     val date = formatter.parse(dateText)
+                    dateText = LocalDateTime.of(year, month, dayOfMonth, 0, 0).format(DateTimeFormatter.BASIC_ISO_DATE)
+                    // Log.i("datepicker_info", "${dateText}")
                     // Log.i("date_info", SimpleDateFormat("dd MMM yyyy").format(date))
                     binding.editDate.setText(SimpleDateFormat("dd MMM yyyy").format(date))
                 },
