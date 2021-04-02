@@ -4,11 +4,21 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 
 import com.project.stonktracker.PurchaseHistory
+import com.project.stonktracker.StockInfo
 
 class FragmentVM : ViewModel() {
 
+    private val stockInfo = MutableLiveData<StockInfo>()
     private var company = MutableLiveData<Company>()
     private var investment = MutableLiveData<Investment>()
+
+    fun getStockInfo(): StockInfo {
+        return stockInfo.value!!
+    }
+
+    fun setStockInfo(si: StockInfo) {
+        stockInfo.postValue(si)
+    }
 
     fun getCompany(): Company {
         return company.value!!

@@ -38,6 +38,7 @@ data class PurchaseHistory (
 data class StockInfo (
     @PrimaryKey val ticker: String = "",
     @ColumnInfo var full_name: String = "",
+    @ColumnInfo var description: String = "",
     @ColumnInfo var sector: String = "",
     @ColumnInfo var webURL: String = "",
     @ColumnInfo var webURL_alt: String = "",

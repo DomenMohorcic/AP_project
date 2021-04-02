@@ -83,11 +83,9 @@ class StocksVM : ViewModel() {
         viewModelScope.launch(Dispatchers.IO) {
             repository.phInsert(ph)
             repository.getCloses()
-            Log.i("fragment_observe", "Posting value...")
             history.postValue(repository.phGetHistory())
             stocks.postValue(repository.siGetPortfolio())
             tickers_web.postValue(repository.siGetTickersAndURLs())
-            Log.i("fragment_observe", "DONE?")
         }
     }
 }
@@ -184,9 +182,10 @@ class StocksRepository(private val stonkDao: StonkDao) {
                     } else {
                         val name: String = response.getString("name")
                         val sector: String = response.getString("sector")
+                        val desc: String = response.getString("description")
                         val webURL: String = response.getString("url")
                         val webURLalt: String = response.getString("logo")
-                        val si = StockInfo(ph.ticker, name, sector, webURL, webURLalt, ph.quantity, ph.price)
+                        val si = StockInfo(ph.ticker, name, desc, sector, webURL, webURLalt, ph.quantity, ph.price)
                         Log.i("fragment_observe", "Setting thread...")
                         val t = Thread {
                             stonkDao.phInsert(ph)

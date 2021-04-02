@@ -69,6 +69,7 @@ class PortfolioFragmentAdapter(private val stockData: ArrayList<StockInfo>, priv
             var activity: AppCompatActivity = view.context as AppCompatActivity
 
             // save choice to FragmentVM
+            fragmentVM.setStockInfo(si)
             fragmentVM.setCompany(Company(si.ticker, si.full_name, si.sector))
             fragmentVM.setInvestment(Investment(si.ticker, si.shares, si.last_close, change, change_percent))
 
