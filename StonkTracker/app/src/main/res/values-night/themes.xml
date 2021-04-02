@@ -15,6 +15,8 @@
         <!-- Customize your theme here. -->
         <item name="hintTextColor">@color/neutral_000</item>
         <item name="android:textColor">@color/white</item>
+        <item name="colorButtonNormal">@drawable/custom_search_button_white</item>
+        <item name="textAppearanceButton">@drawable/custom_search_text_white</item>
 
     </style>
 
