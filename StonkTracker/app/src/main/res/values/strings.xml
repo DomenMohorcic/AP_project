@@ -44,6 +44,12 @@
     <string name="last_dividend">Dividend yield</string>
     <string name="beta">Beta</string>
 
+    <string name="stock_gains">Stonk gains</string>
+    <string name="stock_value">Stonk values</string>
+    <string name="sector_gains">Sector gains</string>
+    <string name="sector_value">Sector value</string>
+    <string name="stonk_stats">Stonk stats</string>
+
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="appwidget_text">EXAMPLE</string>

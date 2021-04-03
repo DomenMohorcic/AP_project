@@ -16,25 +16,93 @@
         android:background="?attr/colorOnBackground"
         tools:context=".PortfolioFragment">
 
-
         <TextView
-            android:id="@+id/textView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="DiS iS a FrGmeNT"
-            app:layout_constraintBottom_toBottomOf="parent"
+            android:id="@+id/textViewHeader"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="16dp"
+            android:layout_weight="3"
+            android:gravity="center_vertical"
+            android:text="@string/stonk_stats"
+            android:textSize="32sp"
+            android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.498"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <com.github.mikephil.charting.charts.PieChart
-            android:id="@+id/valuePieChart"
-            android:layout_width="300dp"
-            android:layout_height="300dp"
+        <HorizontalScrollView
+            android:id="@+id/horizontalScrollView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:scrollbars="none"
+            android:foregroundGravity="center|left"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            android:layout_marginTop="16dp"/>
+            app:layout_constraintTop_toBottomOf="@+id/textViewHeader">
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingEnd="16dp">
+
+                <Button
+                    android:id="@+id/buttonShowStockValue"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:background="?attr/colorButtonNormal"
+                    android:paddingStart="10dp"
+                    android:paddingEnd="10dp"
+                    android:text="@string/stock_value"
+                    android:textColor="?attr/textAppearanceButton" />
+
+                <Button
+                    android:id="@+id/buttonShowStockGains"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:background="?attr/colorButtonNormal"
+                    android:paddingStart="10dp"
+                    android:paddingEnd="10dp"
+                    android:text="@string/stock_gains"
+                    android:textColor="?attr/textAppearanceButton" />
+
+                <Button
+                    android:id="@+id/buttonShowSectorValue"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:background="?attr/colorButtonNormal"
+                    android:paddingStart="10dp"
+                    android:paddingEnd="10dp"
+                    android:text="@string/sector_value"
+                    android:textColor="?attr/textAppearanceButton" />
+
+                <Button
+                    android:id="@+id/buttonShowSectorGains"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:background="?attr/colorButtonNormal"
+                    android:paddingStart="10dp"
+                    android:paddingEnd="10dp"
+                    android:text="@string/sector_gains"
+                    android:textColor="?attr/textAppearanceButton" />
+
+            </LinearLayout>
+        </HorizontalScrollView>
+
+        <com.github.mikephil.charting.charts.PieChart
+            android:id="@+id/valuePieChart"
+            android:layout_width="0dp"
+            android:layout_height="400dp"
+            android:layout_marginTop="32dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/horizontalScrollView" />
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

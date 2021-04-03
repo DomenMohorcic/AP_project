@@ -69,7 +69,7 @@ class StatsFragment : Fragment() {
             pieDataSet.valueFormatter = MyValueFormatter()
             val pieData = PieData(pieDataSet)
             valuePieChart.data = pieData
-            valuePieChart.centerText = "$"+value.toString() // TODO doesn't work
+            valuePieChart.centerText = "$${String.format("%,.2f", value)}" // TODO doesn't work
             valuePieChart.invalidate()
         })
 
