@@ -80,7 +80,7 @@ class StatsFragment : Fragment() {
     private fun getRainbowColors(number: Int): ArrayList<Int> {
         var c = ArrayList<Int>()
         for(i in 0 until number) {
-            c.add(Color.rgb((0..255).random(), (0..255).random(), (0..255).random()))
+            c.add(Color.HSVToColor(floatArrayOf((360/number*i).toFloat(), 0.75f, 0.75f)))
         }
         return c
     }
