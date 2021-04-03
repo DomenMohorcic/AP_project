@@ -40,7 +40,10 @@ android {
 }
 
 dependencies {
+    // MP Android Chart
+    implementation 'com.github.PhilJay:MPAndroidChart:v3.1.0'
 
+    // Text show less/more
     implementation 'com.github.mahimrocky:ShowMoreText:1.0.2'
 
     // Volley for http api calls

@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.activityViewModels
+import com.github.mikephil.charting.charts.PieChart
 import com.project.stonktracker.R
 import com.project.stonktracker.TransactionFragment
 import com.project.stonktracker.databinding.FragmentStatsBinding
@@ -18,14 +19,15 @@ import java.time.format.DateTimeFormatter
 import java.time.format.FormatStyle
 
 class StatsFragment : Fragment() {
-    // TODO: add shit
 
     companion object {
         fun newInstance() = StatsFragment()
     }
 
     //private val fragmentVM: FragmentVM by activityViewModels()
-    //private val stocksVM: StocksVM by activityViewModels()
+    private val stocksVM: StocksVM by activityViewModels()
+
+    private lateinit var valuePieChart: PieChart
 
     // binding
     private var _binding: FragmentStatsBinding? = null
@@ -36,14 +38,17 @@ class StatsFragment : Fragment() {
         super.onCreate(savedInstanceState)
     }
 
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?,
-    ): View? {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         container?.removeAllViews() // else previous fragment is visible in background
         _binding = FragmentStatsBinding.inflate(inflater, container, false)
 
+        valuePieChart = binding.valuePieChart
+
         return binding.root
+    }
+
+    override fun onDestroyView() {
+        _binding = null
+        super.onDestroyView()
     }
 }
