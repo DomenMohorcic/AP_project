@@ -2,6 +2,7 @@ package com.project.stonktracker.viewmodels
 
 import android.os.Build
 import android.util.Log
+import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -25,6 +26,9 @@ class StocksVM : ViewModel() {
     private var history = MutableLiveData<List<PurchaseHistory>>()
 
     private var historyTicker = MutableLiveData<List<PurchaseHistory>>()
+
+    var successMarketstack = MutableLiveData<Int>()
+    var successPolygon = MutableLiveData<Int>()
 
     fun init() {
         viewModelScope.launch(Dispatchers.IO) {
@@ -58,6 +62,8 @@ class StocksVM : ViewModel() {
     fun updateCloses() {
         viewModelScope.launch(Dispatchers.IO) {
             repository.getCloses()
+            successPolygon.postValue(repository.successPolygon)
+
             stocks.postValue(repository.siGetPortfolio())
         }
     }
@@ -82,7 +88,11 @@ class StocksVM : ViewModel() {
     fun phInsert(ph: PurchaseHistory) {
         viewModelScope.launch(Dispatchers.IO) {
             repository.phInsert(ph)
+            successMarketstack.postValue(repository.successMarketstack)
+
             repository.getCloses()
+            successPolygon.postValue(repository.successPolygon)
+
             history.postValue(repository.phGetHistory())
             stocks.postValue(repository.siGetPortfolio())
             tickers_web.postValue(repository.siGetTickersAndURLs())
@@ -95,6 +105,15 @@ class StocksVM : ViewModel() {
 //
 
 class StocksRepository(private val stonkDao: StonkDao) {
+
+    /* API success
+    * 0 -> no info
+    * 1 -> OK
+    * 2 -> API error
+    * 3 -> Volley error
+    * */
+    var successMarketstack: Int = 0
+    var successPolygon: Int = 0
 
     // Closes
 
@@ -113,10 +132,13 @@ class StocksRepository(private val stonkDao: StonkDao) {
             val url = "http://api.marketstack.com/v1/eod?access_key=$KEY_MARKETSTACK&symbols=$updateList&limit=$c"
             queue?.add(JsonObjectRequest(Request.Method.GET, url, null,
                 { response ->
-                    Log.i("request_api", "Got response")
                     if(response.has("error")) {
                         // API ERROR
+                        Log.i("api_marketstack", "Response OK but ERROR")
+                        successMarketstack = 2
                     } else {
+                        Log.i("api_marketstack", "Response OK")
+                        successMarketstack = 1
                         val data = response.getJSONArray("data")
                         val updatedSI = emptyList<StockInfo>()
                         for(i in 0 until data.length()) {
@@ -133,7 +155,10 @@ class StocksRepository(private val stonkDao: StonkDao) {
                         }
                     }
                 },
-                { error -> Log.e("request_api", error.toString()) }))
+                { error ->
+                    Log.e("api_marketstack", error.toString())
+                    successMarketstack = 3
+                }))
         }
         while(c > 0) {}
     }
@@ -179,24 +204,31 @@ class StocksRepository(private val stonkDao: StonkDao) {
                 { response ->
                     if(response.has("error")) {
                         // API ERROR
+                        Log.i("api_polygon", "Response OK but ERROR")
+                        successPolygon = 2
                     } else {
+                        Log.i("api_polygon", "Response OK")
+                        successPolygon = 1
                         val name: String = response.getString("name")
                         val sector: String = response.getString("sector")
                         val desc: String = response.getString("description")
                         val webURL: String = response.getString("url")
                         val webURLalt: String = response.getString("logo")
                         val si = StockInfo(ph.ticker, name, desc, sector, webURL, webURLalt, ph.quantity, ph.price)
-                        Log.i("fragment_observe", "Setting thread...")
+                        //Log.i("fragment_observe", "Setting thread...")
                         val t = Thread {
                             stonkDao.phInsert(ph)
                             stonkDao.siInsert(si)
-                            Log.i("fragment_observe", "Actually saving to DB...")
+                            //Log.i("fragment_observe", "Actually saving to DB...")
                             resultDone = true
                         }
                         t.start()
                     }
                 },
-                { error -> Log.e("request_error", error.toString()) }))
+                { error ->
+                    Log.e("api_polygon", error.toString())
+                    successPolygon = 3
+                }))
         }
         while(!resultDone) {}
     }

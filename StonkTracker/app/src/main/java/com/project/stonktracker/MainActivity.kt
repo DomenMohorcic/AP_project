@@ -159,7 +159,7 @@ class MainActivity : AppCompatActivity() {
             if(doublePressed) { super.onBackPressed() }
             else {
                 doublePressed = true;
-                Toast.makeText(this, "Click BACK again to exit", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "Click BACK again to exit", Toast.LENGTH_SHORT).show()
                 Handler().postDelayed(Runnable {doublePressed = false}, 2000)
             }
         }

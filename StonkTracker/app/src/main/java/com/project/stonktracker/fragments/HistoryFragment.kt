@@ -7,6 +7,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.GridLayoutManager
@@ -63,6 +64,24 @@ class HistoryFragment : Fragment() {
             if(this::hist.isInitialized) {
                 recyclerView.adapter = HistoryFragmentAdapter(ArrayList(hist), tickerURL)
             }
+        })
+
+        // Handle api errors nicely
+        stocksVM.successPolygon.observe(viewLifecycleOwner, {status ->
+            Log.i("history", status.toString())
+            when(status) {
+                2 -> Toast.makeText(activity, "Something went wrong, please try again in a couple of seconds", Toast.LENGTH_SHORT).show()
+                3 -> Toast.makeText(activity, "Please check your internet connection", Toast.LENGTH_SHORT).show()
+            }
+            stocksVM.successPolygon.value = 0
+        })
+        stocksVM.successMarketstack.observe(viewLifecycleOwner, {status ->
+            Log.i("history", status.toString())
+            when(status) {
+                2 -> Toast.makeText(activity, "Something went wrong, please try again in a couple of seconds", Toast.LENGTH_SHORT).show()
+                3 -> Toast.makeText(activity, "Please check your internet connection", Toast.LENGTH_SHORT).show()
+            }
+            stocksVM.successMarketstack.value = 0
         })
 
         return binding.root

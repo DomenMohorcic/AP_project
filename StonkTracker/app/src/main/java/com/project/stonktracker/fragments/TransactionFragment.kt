@@ -104,18 +104,11 @@ class TransactionFragment : Fragment() {
         }
 
         binding.buttonSave.setOnClickListener {
-            var shares = if (binding.editShares.text.toString() != "") binding.editShares.text.toString().toDouble() else 0.0
-            var price = if (binding.editPrice.text.toString() != "") binding.editPrice.text.toString().toDouble() else 0.0
-            var fees = if (binding.editFees.text.toString() != "") binding.editFees.text.toString().toDouble() else 0.0
+            val shares = if(binding.editShares.text.toString() != "") binding.editShares.text.toString().toDouble() else 0.0
+            val price = if(binding.editPrice.text.toString() != "") binding.editPrice.text.toString().toDouble() else 0.0
+            val fees = if(binding.editFees.text.toString() != "") binding.editFees.text.toString().toDouble() else 0.0
 
-            var ph: PurchaseHistory = PurchaseHistory(0,
-                company.ticker,
-                dateText,
-                shares,
-                price,
-                fees,
-                buyStatus
-            )
+            val ph = PurchaseHistory(0, company.ticker, dateText, shares, price, fees, buyStatus)
 
             // add to database via MVVM
             Log.i("fragment_observe", "Saving transaction")
@@ -123,7 +116,7 @@ class TransactionFragment : Fragment() {
             // portfolioVM.updateStocks()
 
             // After added transaction go to HISTORY
-            var activity: AppCompatActivity = it.context as AppCompatActivity
+            val activity: AppCompatActivity = it.context as AppCompatActivity
 
             val fragmentTransaction = activity.supportFragmentManager.beginTransaction()
             fragmentTransaction.replace(R.id.fragment, HistoryFragment())

@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.activityViewModels
@@ -45,22 +46,34 @@ class SearchFragment : Fragment() {
         // makes API call - https://www.alphavantage.co/documentation/#symbolsearch
         binding.button.setOnClickListener {
             val q = binding.searchBox.text
-            val url = "https://www.alphavantage.co/query?function=SYMBOL_SEARCH&keywords=${q}&apikey=${KEY_VANTAGE}"
-            queue?.add(JsonObjectRequest(Request.Method.GET, url, null,
-                { response ->
-                    if(response.has("bestMatches")) {
-                        val arr = response.getJSONArray("bestMatches")
-                        for(i in 0 until arr.length()) {
-                            var obj = arr.getJSONObject(i)
-                            searchResults.add(Company(obj.getString("1. symbol"), obj.getString("2. name"), "none"))
-                        }
-                        // RecyclerView for showing portfolio data
-                        recyclerView.adapter = SearchFragmentAdapter(searchResults, fragmentVM)
+            if(q.isNotEmpty()) {
+                val url = "https://www.alphavantage.co/query?function=SYMBOL_SEARCH&keywords=${q}&apikey=${KEY_VANTAGE}"
+                queue?.add(JsonObjectRequest(Request.Method.GET, url, null,
+                    { response ->
+                        if(response.has("bestMatches")) {
+                            Log.i("api_search", "Response OK")
+                            val arr = response.getJSONArray("bestMatches")
+                            for(i in 0 until arr.length()) {
+                                var obj = arr.getJSONObject(i)
+                                searchResults.add(Company(obj.getString("1. symbol"), obj.getString("2. name"), "none"))
+                            }
+                            // RecyclerView for showing portfolio data
+                            recyclerView.adapter = SearchFragmentAdapter(searchResults, fragmentVM)
 
-                        searchResults = ArrayList()
-                    }
-                },
-                { error -> Log.e("request_error", error.toString()) }))
+                            searchResults = ArrayList()
+                        } else {
+                            Log.e("api_search", "Response OK but ERROR")
+                            Toast.makeText(activity, "Something went wrong, please try again in a couple of seconds", Toast.LENGTH_SHORT).show()
+                        }
+                    },
+                    { error ->
+                        Log.e("api_search", error.toString())
+                        Toast.makeText(activity, "Please check your internet connection", Toast.LENGTH_SHORT).show()
+                    }))
+            } else {
+                Log.i("api_search", "Empty input text")
+                Toast.makeText(activity, "Cannot search for nothing", Toast.LENGTH_SHORT).show()
+            }
         }
 
         return binding.root
