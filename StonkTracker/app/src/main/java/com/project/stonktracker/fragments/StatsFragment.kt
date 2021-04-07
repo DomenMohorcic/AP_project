@@ -7,6 +7,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.compose.ui.text.createTextLayoutResult
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.activityViewModels
 import com.github.mikephil.charting.charts.PieChart
@@ -125,31 +126,36 @@ class StatsFragment : Fragment() {
     private fun pieStockValues() {
         val entries = ArrayList<PieEntry>()
         var value = 0.0
+        val textColors = ArrayList<Int>()
 
         for(stock in stocks) {
             entries.add(PieEntry((stock.shares*stock.last_close).toFloat(), stock.ticker))
             value += stock.shares*stock.last_close
+            textColors.add(R.color.black)
         }
 
-        pieDraw(entries, value)
+        pieDraw(entries, value, textColors)
     }
 
     private fun pieStockGains() {
         val entries = ArrayList<PieEntry>()
         var value = 0.0
+        val textColors = ArrayList<Int>()
 
         for(stock in stocks) {
             entries.add(PieEntry((stock.shares*stock.last_close-stock.shares*stock.avg_price).toFloat(), stock.ticker))
             value += stock.shares*stock.last_close-stock.shares*stock.avg_price
+            textColors.add(R.color.black)
         }
 
-        pieDraw(entries, value)
+        pieDraw(entries, value, textColors)
     }
 
     private fun pieSectorValues() {
         val entries = ArrayList<PieEntry>()
         val sectors = HashMap<String, Float>().withDefault { 0.0f }
         var value = 0.0
+        val textColors = ArrayList<Int>()
 
         for(stock in stocks) {
             var sec: String = if(stock.sector.isBlank()) {"Unknown"} else {stock.sector}
@@ -162,15 +168,17 @@ class StatsFragment : Fragment() {
         }
         for((key, value) in sectors) {
             entries.add(PieEntry(value, key))
+            textColors.add(R.color.black)
         }
 
-        pieDraw(entries, value)
+        pieDraw(entries, value, textColors)
     }
 
     private fun pieSectorGains() {
         val entries = ArrayList<PieEntry>()
         val sectors = HashMap<String, Float>().withDefault { 0.0f }
         var value = 0.0
+        val textColors = ArrayList<Int>()
 
         for(stock in stocks) {
             var sec: String = if(stock.sector.isBlank()) {"Unknown"} else {stock.sector}
@@ -183,16 +191,18 @@ class StatsFragment : Fragment() {
         }
         for((key, value) in sectors) {
             entries.add(PieEntry(value, key))
+            textColors.add(R.color.black)
         }
 
-        pieDraw(entries, value)
+        pieDraw(entries, value, textColors)
     }
 
-    private fun pieDraw(entries: List<PieEntry>, value: Double) {
+    private fun pieDraw(entries: List<PieEntry>, value: Double, textColors: List<Int>) {
         val pieDataSet = PieDataSet(entries, "")
         pieDataSet.colors = getRainbowColors(stocks.size)
         pieDataSet.valueFormatter = MyValueFormatter()
         val pieData = PieData(pieDataSet)
+        pieData.setValueTextColors(textColors)
         pieChart.data = pieData
         pieChart.centerText = "$${String.format("%,.2f", value)}"
         pieChart.invalidate()
