@@ -88,10 +88,10 @@ class StocksVM : ViewModel() {
     fun phInsert(ph: PurchaseHistory) {
         viewModelScope.launch(Dispatchers.IO) {
             repository.phInsert(ph)
-            successMarketstack.postValue(repository.successMarketstack)
+            successPolygon.postValue(repository.successPolygon)
 
             repository.getCloses()
-            successPolygon.postValue(repository.successPolygon)
+            successMarketstack.postValue(repository.successMarketstack)
 
             history.postValue(repository.phGetHistory())
             stocks.postValue(repository.siGetPortfolio())
@@ -158,6 +158,7 @@ class StocksRepository(private val stonkDao: StonkDao) {
                 { error ->
                     Log.e("api_marketstack", error.toString())
                     successMarketstack = 3
+                    c = 0
                 }))
         }
         while(c > 0) {}
@@ -228,6 +229,7 @@ class StocksRepository(private val stonkDao: StonkDao) {
                 { error ->
                     Log.e("api_polygon", error.toString())
                     successPolygon = 3
+                    resultDone = true
                 }))
         }
         while(!resultDone) {}

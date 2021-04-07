@@ -67,14 +67,14 @@ class HistoryFragment : Fragment() {
         })
 
 
-        // Handle api errors nicely TODO This does not work... crashes the app
-        /* stocksVM.successPolygon.observe(viewLifecycleOwner, {status ->
+        // Handle api errors nicely
+        stocksVM.successPolygon.observe(viewLifecycleOwner, {status ->
             Log.i("history", status.toString())
             when(status) {
                 2 -> Toast.makeText(activity, "Something went wrong, please try again in a couple of seconds", Toast.LENGTH_SHORT).show()
-                3 -> Toast.makeText(activity, "Please check your internet connection", Toast.LENGTH_SHORT).show()
+                3 -> Toast.makeText(activity, "Sorry, but we cannot get data for that stock...", Toast.LENGTH_SHORT).show()
             }
-            stocksVM.successPolygon.value = 0
+            if(status > 1) {stocksVM.successPolygon.value = 0}
         })
         stocksVM.successMarketstack.observe(viewLifecycleOwner, {status ->
             Log.i("history", status.toString())
@@ -82,8 +82,8 @@ class HistoryFragment : Fragment() {
                 2 -> Toast.makeText(activity, "Something went wrong, please try again in a couple of seconds", Toast.LENGTH_SHORT).show()
                 3 -> Toast.makeText(activity, "Please check your internet connection", Toast.LENGTH_SHORT).show()
             }
-            stocksVM.successMarketstack.value = 0
-        })*/
+            if(status > 1) {stocksVM.successMarketstack.value = 0}
+        })
 
         return binding.root
     }
