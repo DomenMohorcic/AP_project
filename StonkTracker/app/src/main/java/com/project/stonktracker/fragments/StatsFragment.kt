@@ -7,6 +7,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.activityViewModels
 import com.github.mikephil.charting.charts.PieChart
 import com.github.mikephil.charting.components.Description
@@ -36,6 +37,7 @@ class StatsFragment : Fragment() {
     private val stocksVM: StocksVM by activityViewModels()
 
     private lateinit var valuePieChart: PieChart
+    private var showStatus: Int = 0
 
     // binding
     private var _binding: StatsFragmentBinding? = null
@@ -59,10 +61,16 @@ class StatsFragment : Fragment() {
         stocksVM.getStocks().observe(viewLifecycleOwner, { stocks ->
             val entries = ArrayList<PieEntry>()
             var value = 0.0
+
+            /* when (showStatus) {
+                // TODO ...
+            } */
+
             for(stock in stocks) {
                 entries.add(PieEntry((stock.shares*stock.last_close).toFloat(), stock.ticker))
                 value += stock.shares*stock.last_close
             }
+
             Log.i("pie", value.toString())
             val pieDataSet = PieDataSet(entries, "")
             pieDataSet.colors = getRainbowColors(stocks.size) //ColorTemplate.COLORFUL_COLORS.toCollection(ArrayList())
@@ -74,6 +82,72 @@ class StatsFragment : Fragment() {
         })
 
         return binding.root
+    }
+
+    override fun onActivityCreated(savedInstanceState: Bundle?) {
+        super.onActivityCreated(savedInstanceState)
+
+        var buttonGreen = resources.getDrawable(R.drawable.smooth_background_buy)
+        var buttonNeutral = resources.getDrawable(R.drawable.smooth_background_neutral)
+
+        var green = ContextCompat.getColor(requireContext(), R.color.buy_000)
+        var neutral = ContextCompat.getColor(requireContext(), R.color.neutral_000)
+
+        binding.buttonShowStockValue.setOnClickListener {
+            showStatus = 0
+
+            binding.buttonShowStockValue.setBackgroundDrawable(buttonGreen)
+            binding.buttonShowStockGains.setBackgroundDrawable(buttonNeutral)
+            binding.buttonShowSectorValue.setBackgroundDrawable(buttonNeutral)
+            binding.buttonShowSectorGains.setBackgroundDrawable(buttonNeutral)
+
+            binding.buttonShowStockValue.setTextColor(green)
+            binding.buttonShowStockGains.setTextColor(neutral)
+            binding.buttonShowSectorValue.setTextColor(neutral)
+            binding.buttonShowSectorGains.setTextColor(neutral)
+        }
+
+        binding.buttonShowStockGains.setOnClickListener {
+            showStatus = 1
+
+            binding.buttonShowStockValue.setBackgroundDrawable(buttonNeutral)
+            binding.buttonShowStockGains.setBackgroundDrawable(buttonGreen)
+            binding.buttonShowSectorValue.setBackgroundDrawable(buttonNeutral)
+            binding.buttonShowSectorGains.setBackgroundDrawable(buttonNeutral)
+
+            binding.buttonShowStockValue.setTextColor(neutral)
+            binding.buttonShowStockGains.setTextColor(green)
+            binding.buttonShowSectorValue.setTextColor(neutral)
+            binding.buttonShowSectorGains.setTextColor(neutral)
+        }
+
+        binding.buttonShowSectorValue.setOnClickListener {
+            showStatus = 2
+
+            binding.buttonShowStockValue.setBackgroundDrawable(buttonNeutral)
+            binding.buttonShowStockGains.setBackgroundDrawable(buttonNeutral)
+            binding.buttonShowSectorValue.setBackgroundDrawable(buttonGreen)
+            binding.buttonShowSectorGains.setBackgroundDrawable(buttonNeutral)
+
+            binding.buttonShowStockGains.setTextColor(neutral)
+            binding.buttonShowStockValue.setTextColor(neutral)
+            binding.buttonShowSectorValue.setTextColor(green)
+            binding.buttonShowSectorGains.setTextColor(neutral)
+        }
+
+        binding.buttonShowSectorGains.setOnClickListener {
+            showStatus = 3
+
+            binding.buttonShowStockValue.setBackgroundDrawable(buttonNeutral)
+            binding.buttonShowStockGains.setBackgroundDrawable(buttonNeutral)
+            binding.buttonShowSectorValue.setBackgroundDrawable(buttonNeutral)
+            binding.buttonShowSectorGains.setBackgroundDrawable(buttonGreen)
+
+            binding.buttonShowStockGains.setTextColor(neutral)
+            binding.buttonShowStockValue.setTextColor(neutral)
+            binding.buttonShowSectorValue.setTextColor(neutral)
+            binding.buttonShowSectorGains.setTextColor(green)
+        }
     }
 
     // TODO make it to create rainbow

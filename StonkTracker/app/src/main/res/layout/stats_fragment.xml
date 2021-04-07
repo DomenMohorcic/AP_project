@@ -53,44 +53,44 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="16dp"
-                    android:background="?attr/colorButtonNormal"
+                    android:background="@drawable/smooth_background_buy"
                     android:paddingStart="10dp"
                     android:paddingEnd="10dp"
                     android:text="@string/stock_value"
-                    android:textColor="?attr/textAppearanceButton" />
+                    android:textColor="@color/buy_000" />
 
                 <Button
                     android:id="@+id/buttonShowStockGains"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="16dp"
-                    android:background="?attr/colorButtonNormal"
+                    android:background="@drawable/smooth_background_neutral"
                     android:paddingStart="10dp"
                     android:paddingEnd="10dp"
                     android:text="@string/stock_gains"
-                    android:textColor="?attr/textAppearanceButton" />
+                    android:textColor="@color/neutral_000" />
 
                 <Button
                     android:id="@+id/buttonShowSectorValue"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="16dp"
-                    android:background="?attr/colorButtonNormal"
+                    android:background="@drawable/smooth_background_neutral"
                     android:paddingStart="10dp"
                     android:paddingEnd="10dp"
                     android:text="@string/sector_value"
-                    android:textColor="?attr/textAppearanceButton" />
+                    android:textColor="@color/neutral_000" />
 
                 <Button
                     android:id="@+id/buttonShowSectorGains"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="16dp"
-                    android:background="?attr/colorButtonNormal"
+                    android:background="@drawable/smooth_background_neutral"
                     android:paddingStart="10dp"
                     android:paddingEnd="10dp"
                     android:text="@string/sector_gains"
-                    android:textColor="?attr/textAppearanceButton" />
+                    android:textColor="@color/neutral_000" />
 
             </LinearLayout>
         </HorizontalScrollView>
