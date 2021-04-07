@@ -8,6 +8,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
@@ -108,26 +109,30 @@ class TransactionFragment : Fragment() {
             val price = if(binding.editPrice.text.toString() != "") binding.editPrice.text.toString().toDouble() else 0.0
             val fees = if(binding.editFees.text.toString() != "") binding.editFees.text.toString().toDouble() else 0.0
 
-            val ph = PurchaseHistory(0, company.ticker, dateText, shares, price, fees, buyStatus)
+            if ((shares <= 0.0) || (price <= 0.0) || (fees < 0.0)) {
+              Toast.makeText(view?.context, "Please enter valid numbers for shares, price and fees!", Toast.LENGTH_SHORT).show()
+            } else {
+                val ph = PurchaseHistory(0, company.ticker, dateText, shares, price, fees, buyStatus)
 
-            // add to database via MVVM
-            Log.i("fragment_observe", "Saving transaction")
-            stocksVM.phInsert(ph)
-            // portfolioVM.updateStocks()
+                // add to database via MVVM
+                Log.i("fragment_observe", "Saving transaction")
+                stocksVM.phInsert(ph)
+                // portfolioVM.updateStocks()
 
-            // After added transaction go to HISTORY
-            val activity: AppCompatActivity = it.context as AppCompatActivity
+                // After added transaction go to HISTORY
+                val activity: AppCompatActivity = it.context as AppCompatActivity
 
-            val fragmentTransaction = activity.supportFragmentManager.beginTransaction()
-            fragmentTransaction.replace(R.id.fragment, HistoryFragment())
-            prev_fragment = now_fragment
-            now_fragment = FTracker.HISTORY
-            // fragmentTransaction.addToBackStack(null)
-            fragmentTransaction.commit()
+                val fragmentTransaction = activity.supportFragmentManager.beginTransaction()
+                fragmentTransaction.replace(R.id.fragment, HistoryFragment())
+                prev_fragment = now_fragment
+                now_fragment = FTracker.HISTORY
+                // fragmentTransaction.addToBackStack(null)
+                fragmentTransaction.commit()
 
-            // check the right navigation item...
-            var nav = getActivity()?.findViewById<BottomNavigationView>(R.id.bottomNavigationView)
-            nav!!.menu.getItem(3).isChecked = true
+                // check the right navigation item...
+                var nav = getActivity()?.findViewById<BottomNavigationView>(R.id.bottomNavigationView)
+                nav!!.menu.getItem(3).isChecked = true
+            }
         }
 
         binding.buttonBuy.setOnClickListener {
