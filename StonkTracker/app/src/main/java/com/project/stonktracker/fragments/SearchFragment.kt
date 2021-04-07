@@ -72,7 +72,7 @@ class SearchFragment : Fragment() {
                     }))
             } else {
                 Log.i("api_search", "Empty input text")
-                Toast.makeText(activity, "Cannot search for nothing", Toast.LENGTH_SHORT).show()
+                Toast.makeText(activity, "Cannot search empty text...", Toast.LENGTH_SHORT).show()
             }
         }
 
