@@ -105,9 +105,9 @@ class TransactionFragment : Fragment() {
         }
 
         binding.buttonSave.setOnClickListener {
-            val shares = if(binding.editShares.text.toString() != "") binding.editShares.text.toString().toDouble() else 0.0
-            val price = if(binding.editPrice.text.toString() != "") binding.editPrice.text.toString().toDouble() else 0.0
-            val fees = if(binding.editFees.text.toString() != "") binding.editFees.text.toString().toDouble() else 0.0
+            var shares = if(binding.editShares.text.toString() != "") binding.editShares.text.toString().toDouble() else 0.0
+            var price = if(binding.editPrice.text.toString() != "") binding.editPrice.text.toString().toDouble() else 0.0
+            var fees = if(binding.editFees.text.toString() != "") binding.editFees.text.toString().toDouble() else 0.0
 
             if ((shares <= 0.0) || (price <= 0.0) || (fees < 0.0)) {
               Toast.makeText(view?.context, "Please enter valid numbers for shares, price and fees!", Toast.LENGTH_SHORT).show()
