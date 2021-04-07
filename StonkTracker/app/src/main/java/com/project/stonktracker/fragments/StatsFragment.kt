@@ -1,8 +1,8 @@
 package com.project.stonktracker.fragments
 
+import android.content.Context
 import android.graphics.Color
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -10,25 +10,19 @@ import android.view.ViewGroup
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.activityViewModels
 import com.github.mikephil.charting.charts.PieChart
-import com.github.mikephil.charting.components.Description
+import com.github.mikephil.charting.components.IMarker
+import com.github.mikephil.charting.components.MarkerView
 import com.github.mikephil.charting.data.PieData
 import com.github.mikephil.charting.data.PieDataSet
 import com.github.mikephil.charting.data.PieEntry
 import com.github.mikephil.charting.formatter.ValueFormatter
-import com.github.mikephil.charting.utils.ColorTemplate
 import com.project.stonktracker.R
-import com.project.stonktracker.TransactionFragment
+import com.project.stonktracker.StockInfo
 import com.project.stonktracker.databinding.StatsFragmentBinding
-import com.project.stonktracker.viewmodels.Company
-import com.project.stonktracker.viewmodels.FragmentVM
 import com.project.stonktracker.viewmodels.StocksVM
 import java.text.DecimalFormat
-import java.time.LocalDateTime
-import java.time.format.DateTimeFormatter
-import java.time.format.FormatStyle
 
 class StatsFragment : Fragment() {
-
     companion object {
         fun newInstance() = StatsFragment()
     }
@@ -36,8 +30,8 @@ class StatsFragment : Fragment() {
     //private val fragmentVM: FragmentVM by activityViewModels()
     private val stocksVM: StocksVM by activityViewModels()
 
-    private lateinit var valuePieChart: PieChart
-    private var showStatus: Int = 0
+    private lateinit var pieChart: PieChart
+    private lateinit var stocks: List<StockInfo>
 
     // binding
     private var _binding: StatsFragmentBinding? = null
@@ -52,33 +46,15 @@ class StatsFragment : Fragment() {
         container?.removeAllViews() // else previous fragment is visible in background
         _binding = StatsFragmentBinding.inflate(inflater, container, false)
 
-        valuePieChart = binding.valuePieChart
-        valuePieChart.description.text = ""
+        pieChart = binding.valuePieChart
+        pieChart.description.text = ""
         //valuePieChart.holeRadius = 50f
         //valuePieChart.transparentCircleRadius = 55f
-        valuePieChart.legend.isEnabled = false
+        pieChart.legend.isEnabled = false
 
         stocksVM.getStocks().observe(viewLifecycleOwner, { stocks ->
-            val entries = ArrayList<PieEntry>()
-            var value = 0.0
-
-            /* when (showStatus) {
-                // TODO ...
-            } */
-
-            for(stock in stocks) {
-                entries.add(PieEntry((stock.shares*stock.last_close).toFloat(), stock.ticker))
-                value += stock.shares*stock.last_close
-            }
-
-            Log.i("pie", value.toString())
-            val pieDataSet = PieDataSet(entries, "")
-            pieDataSet.colors = getRainbowColors(stocks.size) //ColorTemplate.COLORFUL_COLORS.toCollection(ArrayList())
-            pieDataSet.valueFormatter = MyValueFormatter()
-            val pieData = PieData(pieDataSet)
-            valuePieChart.data = pieData
-            valuePieChart.centerText = "$${String.format("%,.2f", value)}"
-            valuePieChart.invalidate()
+            this.stocks = stocks
+            pieStockValues()
         })
 
         return binding.root
@@ -87,20 +63,19 @@ class StatsFragment : Fragment() {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
 
-        var buttonGreen = resources.getDrawable(R.drawable.smooth_background_buy)
-        var buttonNeutral = resources.getDrawable(R.drawable.smooth_background_neutral)
+        val buttonGreen = resources.getDrawable(R.drawable.smooth_background_buy)
+        val buttonNeutral = resources.getDrawable(R.drawable.smooth_background_neutral)
 
-        var green = ContextCompat.getColor(requireContext(), R.color.buy_000)
-        var neutral = ContextCompat.getColor(requireContext(), R.color.neutral_000)
+        val green = ContextCompat.getColor(requireContext(), R.color.buy_000)
+        val neutral = ContextCompat.getColor(requireContext(), R.color.neutral_000)
 
         binding.buttonShowStockValue.setOnClickListener {
-            showStatus = 0
+            pieStockValues()
 
             binding.buttonShowStockValue.setBackgroundDrawable(buttonGreen)
             binding.buttonShowStockGains.setBackgroundDrawable(buttonNeutral)
             binding.buttonShowSectorValue.setBackgroundDrawable(buttonNeutral)
             binding.buttonShowSectorGains.setBackgroundDrawable(buttonNeutral)
-
             binding.buttonShowStockValue.setTextColor(green)
             binding.buttonShowStockGains.setTextColor(neutral)
             binding.buttonShowSectorValue.setTextColor(neutral)
@@ -108,13 +83,12 @@ class StatsFragment : Fragment() {
         }
 
         binding.buttonShowStockGains.setOnClickListener {
-            showStatus = 1
+            pieStockGains()
 
             binding.buttonShowStockValue.setBackgroundDrawable(buttonNeutral)
             binding.buttonShowStockGains.setBackgroundDrawable(buttonGreen)
             binding.buttonShowSectorValue.setBackgroundDrawable(buttonNeutral)
             binding.buttonShowSectorGains.setBackgroundDrawable(buttonNeutral)
-
             binding.buttonShowStockValue.setTextColor(neutral)
             binding.buttonShowStockGains.setTextColor(green)
             binding.buttonShowSectorValue.setTextColor(neutral)
@@ -122,13 +96,12 @@ class StatsFragment : Fragment() {
         }
 
         binding.buttonShowSectorValue.setOnClickListener {
-            showStatus = 2
+            pieSectorValues()
 
             binding.buttonShowStockValue.setBackgroundDrawable(buttonNeutral)
             binding.buttonShowStockGains.setBackgroundDrawable(buttonNeutral)
             binding.buttonShowSectorValue.setBackgroundDrawable(buttonGreen)
             binding.buttonShowSectorGains.setBackgroundDrawable(buttonNeutral)
-
             binding.buttonShowStockGains.setTextColor(neutral)
             binding.buttonShowStockValue.setTextColor(neutral)
             binding.buttonShowSectorValue.setTextColor(green)
@@ -136,13 +109,12 @@ class StatsFragment : Fragment() {
         }
 
         binding.buttonShowSectorGains.setOnClickListener {
-            showStatus = 3
+            pieSectorGains()
 
             binding.buttonShowStockValue.setBackgroundDrawable(buttonNeutral)
             binding.buttonShowStockGains.setBackgroundDrawable(buttonNeutral)
             binding.buttonShowSectorValue.setBackgroundDrawable(buttonNeutral)
             binding.buttonShowSectorGains.setBackgroundDrawable(buttonGreen)
-
             binding.buttonShowStockGains.setTextColor(neutral)
             binding.buttonShowStockValue.setTextColor(neutral)
             binding.buttonShowSectorValue.setTextColor(neutral)
@@ -150,7 +122,82 @@ class StatsFragment : Fragment() {
         }
     }
 
-    // TODO make it to create rainbow
+    private fun pieStockValues() {
+        val entries = ArrayList<PieEntry>()
+        var value = 0.0
+
+        for(stock in stocks) {
+            entries.add(PieEntry((stock.shares*stock.last_close).toFloat(), stock.ticker))
+            value += stock.shares*stock.last_close
+        }
+
+        pieDraw(entries, value)
+    }
+
+    private fun pieStockGains() {
+        val entries = ArrayList<PieEntry>()
+        var value = 0.0
+
+        for(stock in stocks) {
+            entries.add(PieEntry((stock.shares*stock.last_close-stock.shares*stock.avg_price).toFloat(), stock.ticker))
+            value += stock.shares*stock.last_close-stock.shares*stock.avg_price
+        }
+
+        pieDraw(entries, value)
+    }
+
+    private fun pieSectorValues() {
+        val entries = ArrayList<PieEntry>()
+        val sectors = HashMap<String, Float>().withDefault { 0.0f }
+        var value = 0.0
+
+        for(stock in stocks) {
+            var sec: String = if(stock.sector.isBlank()) {"Unknown"} else {stock.sector}
+            if(sectors.containsKey(sec)) {
+                var a = sectors[sec]!!
+                a += (stock.shares*stock.last_close).toFloat()
+                sectors[sec] = a
+            } else {sectors[sec] = (stock.shares*stock.last_close).toFloat()}
+            value += stock.shares*stock.last_close
+        }
+        for((key, value) in sectors) {
+            entries.add(PieEntry(value, key))
+        }
+
+        pieDraw(entries, value)
+    }
+
+    private fun pieSectorGains() {
+        val entries = ArrayList<PieEntry>()
+        val sectors = HashMap<String, Float>().withDefault { 0.0f }
+        var value = 0.0
+
+        for(stock in stocks) {
+            var sec: String = if(stock.sector.isBlank()) {"Unknown"} else {stock.sector}
+            if(sectors.containsKey(sec)) {
+                var a = sectors[sec]!!
+                a += (stock.shares*stock.last_close).toFloat()
+                sectors[sec] = a
+            } else {sectors[sec] = (stock.shares*stock.last_close-stock.shares*stock.avg_price).toFloat()}
+            value += stock.shares*stock.last_close-stock.shares*stock.avg_price
+        }
+        for((key, value) in sectors) {
+            entries.add(PieEntry(value, key))
+        }
+
+        pieDraw(entries, value)
+    }
+
+    private fun pieDraw(entries: List<PieEntry>, value: Double) {
+        val pieDataSet = PieDataSet(entries, "")
+        pieDataSet.colors = getRainbowColors(stocks.size)
+        pieDataSet.valueFormatter = MyValueFormatter()
+        val pieData = PieData(pieDataSet)
+        pieChart.data = pieData
+        pieChart.centerText = "$${String.format("%,.2f", value)}"
+        pieChart.invalidate()
+    }
+
     private fun getRainbowColors(number: Int): ArrayList<Int> {
         var c = ArrayList<Int>()
         for(i in 0 until number) {
