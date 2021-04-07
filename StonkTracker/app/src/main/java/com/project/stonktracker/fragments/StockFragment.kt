@@ -59,6 +59,9 @@ class StockFragment: Fragment() {
 
         binding.value = "$${String.format("%,.2f", inv.value * inv.shares)}"
         binding.roi = "$transToken$${String.format("%,.2f", roi)} ($transToken${String.format("%,.2f", roi_percent)}%)"
+        binding.avgPrice = "$${String.format("%,.2f", si.avg_price)}"
+        binding.lastVol = "${String.format("%,d",si.last_volume)}"
+        binding.prevClose = "$${String.format("%,.2f", si.last_close)}"
 
         // TODO make this work...
         if (inv.shares % 10 == 0.0) {
