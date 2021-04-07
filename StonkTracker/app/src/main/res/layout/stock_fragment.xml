@@ -28,10 +28,10 @@
             name="prevClose"
             type="String" />
         <variable
-            name="range"
+            name="lastVol"
             type="String" />
         <variable
-            name="avgVol"
+            name="avgPrice"
             type="String" />
         <variable
             name="marketCap"
@@ -158,7 +158,7 @@
                 <LinearLayout
                     android:id="@+id/linearLayoutInvestment"
                     android:layout_width="0dp"
-                    android:layout_height="150dp"
+                    android:layout_height="300dp"
                     android:layout_marginStart="16dp"
                     android:layout_marginTop="16dp"
                     android:layout_marginEnd="16dp"
@@ -241,9 +241,79 @@
                             android:text="@={roi}" />
                     </LinearLayout>
 
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_weight="3"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:id="@+id/textViewPrevClose"
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1"
+                            android:gravity="center_vertical"
+                            android:text="@string/prev_close" />
+
+                        <TextView
+                            android:id="@+id/textViewPrevCloseEdit"
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1"
+                            android:gravity="center_vertical|right"
+                            android:text="@={prevClose}" />
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_weight="3"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:id="@+id/textViewAvgPrice"
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1"
+                            android:gravity="center_vertical"
+                            android:text="@string/average_price" />
+
+                        <TextView
+                            android:id="@+id/textViewRangeEdit"
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1"
+                            android:gravity="center_vertical|right"
+                            android:text="@={avgPrice}" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_weight="3"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:id="@+id/textViewAvgVol"
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1"
+                            android:gravity="center_vertical"
+                            android:text="@string/last_volume" />
+
+                        <TextView
+                            android:id="@+id/textViewAvgVolEdit"
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1"
+                            android:gravity="center_vertical|right"
+                            android:text="@={lastVol}" />
+                    </LinearLayout>
+
                 </LinearLayout>
 
-                <TextView
+                <!-- <TextView
                     android:id="@+id/textViewStats"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -252,9 +322,9 @@
                     android:text="@string/stats_text"
                     android:textStyle="bold"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/linearLayoutInvestment" />
+                    app:layout_constraintTop_toBottomOf="@+id/linearLayoutInvestment" /> -->
 
-                <LinearLayout
+                <!-- <LinearLayout
                     android:id="@+id/linearLayoutStats"
                     android:layout_width="0dp"
                     android:layout_height="400dp"
@@ -454,7 +524,7 @@
                             android:text="@={avgVol}" />
                     </LinearLayout>
 
-                </LinearLayout>
+                </LinearLayout> -->
 
                 <TextView
                     android:id="@+id/textViewAbout"
@@ -465,7 +535,7 @@
                     android:text="@string/about_text"
                     android:textStyle="bold"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/linearLayoutStats" />
+                    app:layout_constraintTop_toBottomOf="@+id/linearLayoutInvestment" />
 
                 <com.skyhope.showmoretextview.ShowMoreTextView
                     android:id="@+id/showMoreTextAbout"

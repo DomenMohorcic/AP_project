@@ -38,11 +38,13 @@
     <string name="prev_close">Previous close</string>
     <string name="range">52-week range</string>
     <string name="average_vol">Average volume</string>
+    <string name="average_price">Average price paid</string>
     <string name="market_cap">Market cap</string>
     <string name="eps">EPS</string>
     <string name="pe_ratio">Price-to-earnings (P/E)</string>
     <string name="last_dividend">Dividend yield</string>
     <string name="beta">Beta</string>
+    <string name="last_volume">Volume</string>
 
     <string name="stock_gains">Stonk gains</string>
     <string name="stock_value">Stonk values</string>
