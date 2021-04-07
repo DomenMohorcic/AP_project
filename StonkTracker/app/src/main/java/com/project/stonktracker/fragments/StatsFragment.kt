@@ -143,9 +143,12 @@ class StatsFragment : Fragment() {
         val textColors = ArrayList<Int>()
 
         for(stock in stocks) {
-            entries.add(PieEntry((stock.shares*stock.last_close-stock.shares*stock.avg_price).toFloat(), stock.ticker))
-            value += stock.shares*stock.last_close-stock.shares*stock.avg_price
-            textColors.add(R.color.black)
+            var v = stock.shares*stock.last_close-stock.shares*stock.avg_price
+            value += v
+            if (v > 0) {
+                entries.add(PieEntry((v).toFloat(), stock.ticker))
+                textColors.add(R.color.black)
+            }
         }
 
         pieDraw(entries, value, textColors)
@@ -189,9 +192,11 @@ class StatsFragment : Fragment() {
             } else {sectors[sec] = (stock.shares*stock.last_close-stock.shares*stock.avg_price).toFloat()}
             value += stock.shares*stock.last_close-stock.shares*stock.avg_price
         }
-        for((key, value) in sectors) {
-            entries.add(PieEntry(value, key))
-            textColors.add(R.color.black)
+        for((key, v) in sectors) {
+            if (v > 0) {
+                entries.add(PieEntry(v, key))
+                textColors.add(R.color.black)
+            }
         }
 
         pieDraw(entries, value, textColors)
@@ -202,7 +207,7 @@ class StatsFragment : Fragment() {
         pieDataSet.colors = getRainbowColors(stocks.size)
         pieDataSet.valueFormatter = MyValueFormatter()
         val pieData = PieData(pieDataSet)
-        pieData.setValueTextColors(textColors)
+        // pieData.setValueTextColors(textColors)
         pieChart.data = pieData
         pieChart.centerText = "$${String.format("%,.2f", value)}"
         pieChart.invalidate()
